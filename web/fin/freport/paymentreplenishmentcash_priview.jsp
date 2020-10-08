@@ -1,0 +1,21 @@
+
+<%@ page language = "java" %>
+<%@ page import = "java.util.*" %>
+<%@ page import = "java.sql.*" %>
+<%@ page import = "com.project.util.*" %>
+<%@ page import = "com.project.util.jsp.*" %>
+<%@ page import = "com.project.main.db.*" %>
+<%@ page import = "com.project.general.*" %>
+<%@ page import = "com.project.crm.transaction.*" %>
+<%@ page import = "com.project.crm.*" %>
+<%@ page import = "com.project.crm.session.*" %>
+<%@ page import = "com.project.crm.master.*" %>
+<%@ page import = "com.project.crm.report.*" %>
+<%@ page import = "com.project.payroll.*" %>
+<%@ page import = "com.project.fms.master.*" %>
+<%@ page import = "com.project.fms.transaction.*" %>
+<%@ page import = "java.util.Date" %>
+<%@ page import = "com.project.crm.transaction.*" %>
+<%@ include file = "../main/javainit.jsp" %>
+<% int appObjCode = 1; %>
+<%@ include file = "../main/check.jsp" %>

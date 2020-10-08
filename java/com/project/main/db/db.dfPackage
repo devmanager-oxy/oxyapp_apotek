@@ -1,0 +1,57 @@
+package id6mk1cyjts9sgcyjtzn85;
+
+/**
+@version 2.0
+@physicalPackage
+@__modelType diagram 
+*/
+class diagram {
+/**
+@__ref <oiref:java#Class#com.dimata.qdep.db.DBLogger:oiref><oihard>
+@__modelType reference 
+*/
+class reference {
+}/**
+@__ref <oiref:java#Class#com.dimata.qdep.db.DBHandler:oiref><oihard>
+@__modelType reference 
+*/
+class reference6 {
+}/**
+@__ref <oiref:java#Class#com.dimata.qdep.db.DBException:oiref><oihard>
+@__modelType reference 
+*/
+class reference7 {
+}}/**
+@__tags
+@shapeType ClassDiagram 
+*/
+class __tags {
+}/**
+@__options 
+*/
+class __options {
+}/**
+@__positions <oigroup:MemberLink#<oiref:java#Member#com.caatoosee.contara.securprof.dblayer.Logger#logger:oiref>=1282,913,1282,963,1372,963,1372,873,1322,873:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#com.wihita.qdep.db.DBHandler#mylog:oiref>=1274,1067,1072,807:oigroup>
+<oigroup:<oiref:java#Class#com.dimata.qdep.db.DBLogger:oiref>=1,1,203,565,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#com.wihita.qdep.db.DBResultSet#connPool:oiref>=260,158,229,158:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#com.wihita.qdep.db.DBHandler#connPool:oiref>=1238,1067,119,908:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#com.dimata.qdep.db.DBResultSet#connPool:oiref>=555,318,344,318:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#com.wihita.qdep.db.DBLogger#logger:oiref>=1052,911,1052,961,1142,961,1142,871,1092,871:oigroup>
+<oigroup:<oiref:java#Class#com.wihita.qdep.db.DBLogger:oiref>=889,143,203,768,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#com.wihita.qdep.db.DBHandler#oidFactory:oiref>=1311,1067,864,532:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#com.dimata.qdep.db.DBLogger#logger:oiref>=164,566,164,616,254,616,254,526,204,526:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#com.wihita.qdep.db.DBHandler#cnfReader:oiref>=1165,1162,647,1162:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#com.dimata.qdep.db.DBException#dbHandler:oiref>=473,764,442,764:oigroup>
+<oigroup:<oiref:java#Class#com.dimata.qdep.db.DBHandler:oiref>=223,223,219,2236,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#com.dimata.qdep.db.OIDFactory#oidFactory:oiref>=502,193,502,240,586,240,586,156,539,156:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#com.wihita.qdep.db.DBHandler#dbLog:oiref>=1280,1067,1072,807:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#com.wihita.entity.general.OIDFactory#theOIDFactory:oiref>=824,496,824,545,912,545,912,457,863,457:oigroup>
+<oigroup:<oiref:java#Class#com.wihita.qdep.db.DBType:oiref>=474,25,176,368,1:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#com.wihita.qdep.db.OIDFactory#theOIDFactory:oiref>=840,506,840,555,928,555,928,467,879,467:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#com.wihita.qdep.db.DBException#dbHandler:oiref>=358,752,1250,1067:oigroup>
+<oigroup:MemberLink#<oiref:java#Member#com.wihita.qdep.db.OIDFactory#oidFactory:oiref>=813,495,813,542,897,542,897,458,850,458:oigroup>
+<oigroup:<oiref:java#Class#com.dimata.qdep.db.DBException:oiref>=473,473,219,583,1:oigroup>
+*/
+class __positions {
+}

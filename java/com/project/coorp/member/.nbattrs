@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE attributes PUBLIC "-//NetBeans//DTD DefaultAttributes 1.0//EN" "http://www.netbeans.org/dtds/attributes-1_0.dtd">
+<attributes version="1.0">
+    <fileobject name="DbMember.java">
+        <attr name="class_dependency_com.project.main.db.CONHandler" stringvalue="DbMember"/>
+        <attr name="class_dependency_com.project.main.db.I_CONInterface" stringvalue="DbMember"/>
+        <attr name="class_dependency_com.project.main.db.I_CONType" stringvalue="DbMember"/>
+        <attr name="class_dependency_com.project.main.entity.I_PersintentExc" stringvalue="DbMember"/>
+    </fileobject>
+</attributes>

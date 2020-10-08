@@ -1,0 +1,189 @@
+unction cmdKegiatanOpen(count){
+                
+                var where = "";  
+                var val = "";
+                switch(count){
+                    case '1' :
+                        var seg1 = document.frmmodule.JSP_SEGMENT1_ID.value;
+                        where = "segment1_id = " +seg1;                        
+                        val = seg1;
+                        break;
+                    case '2' :
+                        var seg1 = document.frmmodule.JSP_SEGMENT1_ID.value;
+                        var seg2 = document.frmmodule.JSP_SEGMENT2_ID.value;
+                        where = "segment1_id = " +seg1+" and segment2_id = "+seg2;
+                        val = seg1+","+seg2;
+                        break;
+                    case '3' :
+                        var seg1 = document.frmmodule.JSP_SEGMENT1_ID.value;
+                        var seg2 = document.frmmodule.JSP_SEGMENT2_ID.value;
+                        var seg3 = document.frmmodule.JSP_SEGMENT3_ID.value;
+                        where = "segment1_id = " +seg1+" and segment2_id = "+seg2+" and segment3_id = "+seg3;
+                        val = seg1+","+seg2+","+seg3;
+                        break;
+                    case '4' :
+                        var seg1 = document.frmmodule.JSP_SEGMENT1_ID.value;
+                        var seg2 = document.frmmodule.JSP_SEGMENT2_ID.value;
+                        var seg3 = document.frmmodule.JSP_SEGMENT3_ID.value;
+                        var seg4 = document.frmmodule.JSP_SEGMENT4_ID.value;
+                        where = "segment1_id = " +seg1+" and segment2_id = "+seg2+" and segment3_id = "+seg3+" and segment4_id = "+seg4;
+                        val = seg1+","+seg2+","+seg3+","+seg4;
+                        break; 
+                    case '5' :
+                        var seg1 = document.frmmodule.JSP_SEGMENT1_ID.value;
+                        var seg2 = document.frmmodule.JSP_SEGMENT2_ID.value;
+                        var seg3 = document.frmmodule.JSP_SEGMENT3_ID.value;
+                        var seg4 = document.frmmodule.JSP_SEGMENT4_ID.value;
+                        var seg5 = document.frmmodule.JSP_SEGMENT5_ID.value;
+                        where = "segment1_id = " +seg1+" and segment2_id = "+seg2+" and segment3_id = "+seg3+" and segment4_id = "+seg4+" and segment5_id = "+seg5;  
+                        val = seg1+","+seg2+","+seg3+","+seg4+","+seg5;
+                        break;
+                    case '6' :
+                        var seg1 = document.frmmodule.JSP_SEGMENT1_ID.value;
+                        var seg2 = document.frmmodule.JSP_SEGMENT2_ID.value;
+                        var seg3 = document.frmmodule.JSP_SEGMENT3_ID.value;
+                        var seg4 = document.frmmodule.JSP_SEGMENT4_ID.value;
+                        var seg5 = document.frmmodule.JSP_SEGMENT5_ID.value;
+                        var seg6 = document.frmmodule.JSP_SEGMENT6_ID.value;
+                        where = "segment1_id = " +seg1+" and segment2_id = "+seg2+" and segment3_id = "+seg3+" and segment4_id = "+seg4+" and segment5_id = "+seg5+" and segment6_id = "+seg6;  
+                        val = seg1+","+seg2+","+seg3+","+seg4+","+seg5+","+seg6;
+                        break;  
+                    case '7' :
+                        var seg1 = document.frmmodule.JSP_SEGMENT1_ID.value;
+                        var seg2 = document.frmmodule.JSP_SEGMENT2_ID.value;
+                        var seg3 = document.frmmodule.JSP_SEGMENT3_ID.value;
+                        var seg4 = document.frmmodule.JSP_SEGMENT4_ID.value;
+                        var seg5 = document.frmmodule.JSP_SEGMENT5_ID.value;
+                        var seg6 = document.frmmodule.JSP_SEGMENT6_ID.value;
+                        var seg7 = document.frmmodule.JSP_SEGMENT7_ID.value;
+                        where = "segment1_id = " +seg1+" and segment2_id = "+seg2+" and segment3_id = "+seg3+" and segment4_id = "+seg4+" and segment5_id = "+seg5+" and segment6_id = "+seg6+" and segment7_id = "+seg7;  
+                        val = seg1+","+seg2+","+seg3+","+seg4+","+seg5+","+seg6+","+seg7;
+                        break; 
+                    case '8' :
+                        var seg1 = document.frmmodule.JSP_SEGMENT1_ID.value;
+                        var seg2 = document.frmmodule.JSP_SEGMENT2_ID.value;
+                        var seg3 = document.frmmodule.JSP_SEGMENT3_ID.value;
+                        var seg4 = document.frmmodule.JSP_SEGMENT4_ID.value;
+                        var seg5 = document.frmmodule.JSP_SEGMENT5_ID.value;
+                        var seg6 = document.frmmodule.JSP_SEGMENT6_ID.value;
+                        var seg7 = document.frmmodule.JSP_SEGMENT7_ID.value;
+                        var seg8 = document.frmmodule.JSP_SEGMENT8_ID.value;
+                        where = "segment1_id = " +seg1+" and segment2_id = "+seg2+" and segment3_id = "+seg3+" and segment4_id = "+seg4+" and segment5_id = "+seg5+" and segment6_id = "+seg6+" and segment7_id = "+seg7+" and segment8_id = "+seg8;  
+                        val = seg1+","+seg2+","+seg3+","+seg4+","+seg5+","+seg6+","+seg7+","+seg8;
+                        break;
+                    case '9' :
+                        var seg1 = document.frmmodule.JSP_SEGMENT1_ID.value;
+                        var seg2 = document.frmmodule.JSP_SEGMENT2_ID.value;
+                        var seg3 = document.frmmodule.JSP_SEGMENT3_ID.value;
+                        var seg4 = document.frmmodule.JSP_SEGMENT4_ID.value;
+                        var seg5 = document.frmmodule.JSP_SEGMENT5_ID.value;
+                        var seg6 = document.frmmodule.JSP_SEGMENT6_ID.value;
+                        var seg7 = document.frmmodule.JSP_SEGMENT7_ID.value;
+                        var seg8 = document.frmmodule.JSP_SEGMENT8_ID.value;
+                        var seg9 = document.frmmodule.JSP_SEGMENT9_ID.value;
+                        where = "segment1_id = " +seg1+" and segment2_id = "+seg2+" and segment3_id = "+seg3+" and segment4_id = "+seg4+" and segment5_id = "+seg5+" and segment6_id = "+seg6+" and segment7_id = "+seg7+" and segment8_id = "+seg8+" and segment9_id = "+seg9;  
+                        val = seg1+","+seg2+","+seg3+","+seg4+","+seg5+","+seg6+","+seg7+","+seg8+","+seg9;
+                        break; 
+                    case '10' :
+                        var seg1 = document.frmmodule.JSP_SEGMENT1_ID.value;
+                        var seg2 = document.frmmodule.JSP_SEGMENT2_ID.value;
+                        var seg3 = document.frmmodule.JSP_SEGMENT3_ID.value;
+                        var seg4 = document.frmmodule.JSP_SEGMENT4_ID.value;
+                        var seg5 = document.frmmodule.JSP_SEGMENT5_ID.value;
+                        var seg6 = document.frmmodule.JSP_SEGMENT6_ID.value;
+                        var seg7 = document.frmmodule.JSP_SEGMENT7_ID.value;
+                        var seg8 = document.frmmodule.JSP_SEGMENT8_ID.value;
+                        var seg9 = document.frmmodule.JSP_SEGMENT9_ID.value;
+                        var seg10 = document.frmmodule.JSP_SEGMENT10_ID.value;
+                        where = "segment1_id = " +seg1+" and segment2_id = "+seg2+" and segment3_id = "+seg3+" and segment4_id = "+seg4+" and segment5_id = "+seg5+" and segment6_id = "+seg6+" and segment7_id = "+seg7+" and segment8_id = "+seg8+" and segment9_id = "+seg9+" and segment10_id = "+seg10;  
+                        val = seg1+","+seg2+","+seg3+","+seg4+","+seg5+","+seg6+","+seg7+","+seg8+","+seg9+","+seg10;
+                        break;
+                    case '11' :
+                        var seg1 = document.frmmodule.JSP_SEGMENT1_ID.value;
+                        var seg2 = document.frmmodule.JSP_SEGMENT2_ID.value;
+                        var seg3 = document.frmmodule.JSP_SEGMENT3_ID.value;
+                        var seg4 = document.frmmodule.JSP_SEGMENT4_ID.value;
+                        var seg5 = document.frmmodule.JSP_SEGMENT5_ID.value;
+                        var seg6 = document.frmmodule.JSP_SEGMENT6_ID.value;
+                        var seg7 = document.frmmodule.JSP_SEGMENT7_ID.value;
+                        var seg8 = document.frmmodule.JSP_SEGMENT8_ID.value;
+                        var seg9 = document.frmmodule.JSP_SEGMENT9_ID.value;
+                        var seg10 = document.frmmodule.JSP_SEGMENT10_ID.value;
+                        var seg11 = document.frmmodule.JSP_SEGMENT11_ID.value;
+                        where = "segment1_id = " +seg1+" and segment2_id = "+seg2+" and segment3_id = "+seg3+" and segment4_id = "+seg4+" and segment5_id = "+seg5+" and segment6_id = "+seg6+" and segment7_id = "+seg7+" and segment8_id = "+seg8+" and segment9_id = "+seg9+" and segment10_id = "+seg10+" and segment11_id = "+seg11;  
+                        val = seg1+","+seg2+","+seg3+","+seg4+","+seg5+","+seg6+","+seg7+","+seg8+","+seg9+","+seg10+","+seg11;
+                        break;
+                     case '12' :
+                        var seg1 = document.frmmodule.JSP_SEGMENT1_ID.value;
+                        var seg2 = document.frmmodule.JSP_SEGMENT2_ID.value;
+                        var seg3 = document.frmmodule.JSP_SEGMENT3_ID.value;
+                        var seg4 = document.frmmodule.JSP_SEGMENT4_ID.value;
+                        var seg5 = document.frmmodule.JSP_SEGMENT5_ID.value;
+                        var seg6 = document.frmmodule.JSP_SEGMENT6_ID.value;
+                        var seg7 = document.frmmodule.JSP_SEGMENT7_ID.value;
+                        var seg8 = document.frmmodule.JSP_SEGMENT8_ID.value;
+                        var seg9 = document.frmmodule.JSP_SEGMENT9_ID.value;
+                        var seg10 = document.frmmodule.JSP_SEGMENT10_ID.value;
+                        var seg11 = document.frmmodule.JSP_SEGMENT11_ID.value;
+                        var seg12 = document.frmmodule.JSP_SEGMENT12_ID.value;
+                        where = "segment1_id = " +seg1+" and segment2_id = "+seg2+" and segment3_id = "+seg3+" and segment4_id = "+seg4+" and segment5_id = "+seg5+" and segment6_id = "+seg6+" and segment7_id = "+seg7+" and segment8_id = "+seg8+" and segment9_id = "+seg9+" and segment10_id = "+seg10+" and segment11_id = "+seg11+" and segment12_id = "+seg12;  
+                        val = seg1+","+seg2+","+seg3+","+seg4+","+seg5+","+seg6+","+seg7+","+seg8+","+seg9+","+seg10+","+seg11+","+seg12;
+                        break;
+                     case '13' :
+                        var seg1 = document.frmmodule.JSP_SEGMENT1_ID.value;
+                        var seg2 = document.frmmodule.JSP_SEGMENT2_ID.value;
+                        var seg3 = document.frmmodule.JSP_SEGMENT3_ID.value;
+                        var seg4 = document.frmmodule.JSP_SEGMENT4_ID.value;
+                        var seg5 = document.frmmodule.JSP_SEGMENT5_ID.value;
+                        var seg6 = document.frmmodule.JSP_SEGMENT6_ID.value;
+                        var seg7 = document.frmmodule.JSP_SEGMENT7_ID.value;
+                        var seg8 = document.frmmodule.JSP_SEGMENT8_ID.value;
+                        var seg9 = document.frmmodule.JSP_SEGMENT9_ID.value;
+                        var seg10 = document.frmmodule.JSP_SEGMENT10_ID.value;
+                        var seg11 = document.frmmodule.JSP_SEGMENT11_ID.value;
+                        var seg12 = document.frmmodule.JSP_SEGMENT12_ID.value;
+                        var seg13 = document.frmmodule.JSP_SEGMENT13_ID.value;
+                        where = "segment1_id = " +seg1+" and segment2_id = "+seg2+" and segment3_id = "+seg3+" and segment4_id = "+seg4+" and segment5_id = "+seg5+" and segment6_id = "+seg6+" and segment7_id = "+seg7+" and segment8_id = "+seg8+" and segment9_id = "+seg9+" and segment10_id = "+seg10+" and segment11_id = "+seg11+" and segment12_id = "+seg12+" and segment13_id = "+seg13;  
+                        val = seg1+","+seg2+","+seg3+","+seg4+","+seg5+","+seg6+","+seg7+","+seg8+","+seg9+","+seg10+","+seg11+","+seg12+","+seg13;
+                        break;  
+                    case '14' :
+                        var seg1 = document.frmmodule.JSP_SEGMENT1_ID.value;
+                        var seg2 = document.frmmodule.JSP_SEGMENT2_ID.value;
+                        var seg3 = document.frmmodule.JSP_SEGMENT3_ID.value;
+                        var seg4 = document.frmmodule.JSP_SEGMENT4_ID.value;
+                        var seg5 = document.frmmodule.JSP_SEGMENT5_ID.value;
+                        var seg6 = document.frmmodule.JSP_SEGMENT6_ID.value;
+                        var seg7 = document.frmmodule.JSP_SEGMENT7_ID.value;
+                        var seg8 = document.frmmodule.JSP_SEGMENT8_ID.value;
+                        var seg9 = document.frmmodule.JSP_SEGMENT9_ID.value;
+                        var seg10 = document.frmmodule.JSP_SEGMENT10_ID.value;
+                        var seg11 = document.frmmodule.JSP_SEGMENT11_ID.value;
+                        var seg12 = document.frmmodule.JSP_SEGMENT12_ID.value;
+                        var seg13 = document.frmmodule.JSP_SEGMENT13_ID.value;
+                        var seg14 = document.frmmodule.JSP_SEGMENT14_ID.value;
+                        where = "segment1_id = " +seg1+" and segment2_id = "+seg2+" and segment3_id = "+seg3+" and segment4_id = "+seg4+" and segment5_id = "+seg5+" and segment6_id = "+seg6+" and segment7_id = "+seg7+" and segment8_id = "+seg8+" and segment9_id = "+seg9+" and segment10_id = "+seg10+" and segment11_id = "+seg11+" and segment12_id = "+seg12+" and segment13_id = "+seg13+" and segment14_id = "+seg14;  
+                        val = seg1+","+seg2+","+seg3+","+seg4+","+seg5+","+seg6+","+seg7+","+seg8+","+seg9+","+seg10+","+seg11+","+seg12+","+seg13+","+seg14;
+                        break;
+                     case '15' :
+                        var seg1 = document.frmmodule.JSP_SEGMENT1_ID.value;
+                        var seg2 = document.frmmodule.JSP_SEGMENT2_ID.value;
+                        var seg3 = document.frmmodule.JSP_SEGMENT3_ID.value;
+                        var seg4 = document.frmmodule.JSP_SEGMENT4_ID.value;
+                        var seg5 = document.frmmodule.JSP_SEGMENT5_ID.value;
+                        var seg6 = document.frmmodule.JSP_SEGMENT6_ID.value;
+                        var seg7 = document.frmmodule.JSP_SEGMENT7_ID.value;
+                        var seg8 = document.frmmodule.JSP_SEGMENT8_ID.value;
+                        var seg9 = document.frmmodule.JSP_SEGMENT9_ID.value;
+                        var seg10 = document.frmmodule.JSP_SEGMENT10_ID.value;
+                        var seg11 = document.frmmodule.JSP_SEGMENT11_ID.value;
+                        var seg12 = document.frmmodule.JSP_SEGMENT12_ID.value;
+                        var seg13 = document.frmmodule.JSP_SEGMENT13_ID.value;
+                        var seg14 = document.frmmodule.JSP_SEGMENT14_ID.value;
+                        var seg15 = document.frmmodule.JSP_SEGMENT15_ID.value;
+                        where = "segment1_id = " +seg1+" and segment2_id = "+seg2+" and segment3_id = "+seg3+" and segment4_id = "+seg4+" and segment5_id = "+seg5+" and segment6_id = "+seg6+" and segment7_id = "+seg7+" and segment8_id = "+seg8+" and segment9_id = "+seg9+" and segment10_id = "+seg10+" and segment11_id = "+seg11+" and segment12_id = "+seg12+" and segment13_id = "+seg13+" and segment14_id = "+seg14+" and segment15_id = "+seg15;  
+                        val = seg1+","+seg2+","+seg3+","+seg4+","+seg5+","+seg6+","+seg7+","+seg8+","+seg9+","+seg10+","+seg11+","+seg12+","+seg13+","+seg14+","+seg15;
+                        break;    
+                } 
+                
+                window.open("<%=approot%>/activity/moduledtopen.jsp?formName=frmmodule&where="+where+"&val="+val+"&id=x_parent_id&desc=JSP_PARENT_DESCRIPTION", null, "height=400,width=800, status=yes,toolbar=no,menubar=no,location=no, scrollbars=yes");
+            }   

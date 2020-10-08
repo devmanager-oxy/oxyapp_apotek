@@ -1,0 +1,791 @@
+/*
+ * Report Profit & Loss XLS.java
+ *
+ * Created on March 15, 2008, 1:33 AM
+ */
+
+package com.project.fms.report;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.util.zip.GZIPOutputStream;
+import java.io.Writer;
+import java.util.Vector;
+import java.net.URLEncoder;
+import java.util.Date;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.project.util.JSPFormater;
+import com.project.fms.master.*;
+import com.project.payroll.*;
+import com.project.util.jsp.*;
+import com.project.fms.session.*;
+import com.project.general.DbCompany;
+import com.project.general.Company;
+
+
+public class RptRasioXLS extends HttpServlet {
+    
+    /** Initializes the servlet.
+    */  
+    public static String formatDate = "dd MMMM yyyy";
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+
+    }
+
+    /** Destroys the servlet.
+    */  
+    public void destroy() {
+
+    }
+
+    String XMLSafe ( String in )
+    {
+        return in;
+    	//return HTMLEncoder.encode(in);
+    }
+    
+    /** Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+    * @param request servlet request
+    * @param response servlet response
+    * 
+    * Why not use a DOM? Because we want to be able to create the spreadsheet on-the-fly, without
+    * having to use up a lot of memory before hand
+    */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, java.io.IOException {
+        System.out.println("---===| Excel Report |===---");
+        response.setContentType("application/x-msexcel");
+        
+        // Load User Login
+        String loginId = JSPRequestValue.requestString(request, "oid");
+        System.out.println("UserId : "+loginId);
+        
+        
+        // Load Company
+        Company company = DbCompany.getCompany();
+        long oidCompany = company.getOID();           
+        System.out.println("oidCompany : "+oidCompany);   
+        
+        //obj
+        RptRasio rptKonstan = new RptRasio();
+        try{
+            HttpSession session = request.getSession();
+            rptKonstan = (RptRasio)session.getValue("KONSTAN");
+        } catch (Exception ex) { System.out.println(ex); }
+        
+
+        // Load Invoice Item
+        Vector vectorList = new Vector(1,1);
+        try{
+            HttpSession session = request.getSession();
+            vectorList = (Vector)session.getValue("DETAIL");
+        } catch (Exception e) { System.out.println(e); }
+        //System.out.println(vectorList);       
+        
+	//Count total Column
+	int colSpan = 0;
+        System.out.println(colSpan);
+        
+        boolean gzip = false ;
+        
+        //response.setCharacterEncoding( "UTF-8" ) ;
+        OutputStream gzo ;
+        if ( gzip ) {
+            response.setHeader( "Content-Encoding", "gzip" ) ;
+            gzo = new GZIPOutputStream( response.getOutputStream() ) ;
+        } else {
+            gzo = response.getOutputStream() ;
+        }
+        PrintWriter wb = new PrintWriter( new OutputStreamWriter( gzo, "UTF-8" ) ) ;
+
+        //PrintWriter wb = response.getWriter() ;
+        wb.println("<?xml version=\"1.0\"?>");
+        wb.println("<?mso-application progid=\"Excel.Sheet\"?>");
+        wb.println("<Workbook xmlns=\"urn:schemas-microsoft-com:office:spreadsheet\"");
+        wb.println("xmlns:o=\"urn:schemas-microsoft-com:office:office\"");
+        wb.println("xmlns:x=\"urn:schemas-microsoft-com:office:excel\"");
+        wb.println("xmlns:ss=\"urn:schemas-microsoft-com:office:spreadsheet\"");
+        wb.println("xmlns:html=\"http://www.w3.org/TR/REC-html40\">");
+        wb.println("<DocumentProperties xmlns=\"urn:schemas-microsoft-com:office:office\">");
+        wb.println("<Author>Victor</Author>");
+        wb.println("<LastAuthor>Victor</LastAuthor>");
+        wb.println("<Created>2009-09-27T07:03:35Z</Created>");
+        wb.println("<LastSaved>2009-09-27T07:08:56Z</LastSaved>");
+        wb.println("<Company>Victory</Company>");
+        wb.println("<Version>11.5606</Version>");
+        wb.println("</DocumentProperties>");
+        wb.println("<ExcelWorkbook xmlns=\"urn:schemas-microsoft-com:office:excel\">");
+        wb.println("<WindowHeight>8955</WindowHeight>");
+        wb.println("<WindowWidth>14955</WindowWidth>");
+        wb.println("<WindowTopX>600</WindowTopX>");
+        wb.println("<WindowTopY>270</WindowTopY>");
+        wb.println("<ProtectStructure>False</ProtectStructure>");
+        wb.println("<ProtectWindows>False</ProtectWindows>");
+        wb.println("</ExcelWorkbook>");
+        wb.println("<Styles>");
+        wb.println("<Style ss:ID=\"Default\" ss:Name=\"Normal\">");
+        wb.println("<Alignment ss:Vertical=\"Bottom\"/>");
+        wb.println("<Borders/>");
+        wb.println("<Font/>");
+        wb.println("<Interior/>");
+        wb.println("<NumberFormat/>");
+        wb.println("<Protection/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"s16\" ss:Name=\"Comma\">");
+        wb.println("<NumberFormat ss:Format=\"_(* #,##0.00_);_(* \\(#,##0.00\\);_(* &quot;-&quot;??_);_(@_)\"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"m17378412\" ss:Parent=\"s16\">");
+        wb.println("<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\" ss:WrapText=\"1\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\" ss:Size=\"9\" ss:Bold=\"1\"/>");
+        wb.println("<NumberFormat ss:Format=\"_ * #,##0.00_)\\ [$%-1]_ ;_ * \\(#,##0.00\\)\\ [$%-1]_ ;_ * &quot;-&quot;??_)\\ [$%-1]_ ;_ @_ \"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"m17378422\" ss:Parent=\"s16\">");
+        wb.println("<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\" ss:WrapText=\"1\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\" ss:Size=\"9\" ss:Bold=\"1\"/>");
+        wb.println("<NumberFormat ss:Format=\"_ * #,##0.00_)\\ [$%-1]_ ;_ * \\(#,##0.00\\)\\ [$%-1]_ ;_ * &quot;-&quot;??_)\\ [$%-1]_ ;_ @_ \"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"m17378432\">");
+        wb.println("<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\" ss:WrapText=\"1\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font x:Family=\"Swiss\" ss:Size=\"14\"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"m17378442\">");
+        wb.println("<Alignment ss:Horizontal=\"Left\" ss:Vertical=\"Center\" ss:WrapText=\"1\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\" ss:Bold=\"1\"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"m17372840\" ss:Parent=\"s16\">");
+        wb.println("<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\" ss:WrapText=\"1\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\" ss:Size=\"9\" ss:Bold=\"1\"/>");
+        wb.println("<NumberFormat ss:Format=\"_ * #,##0.00_)\\ [$%-1]_ ;_ * \\(#,##0.00\\)\\ [$%-1]_ ;_ * &quot;-&quot;??_)\\ [$%-1]_ ;_ @_ \"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"m17372850\" ss:Parent=\"s16\">");
+        wb.println("<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\" ss:WrapText=\"1\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\" ss:Size=\"9\" ss:Bold=\"1\"/>");
+        wb.println("<NumberFormat ss:Format=\"_ * #,##0.00_)\\ [$%-1]_ ;_ * \\(#,##0.00\\)\\ [$%-1]_ ;_ * &quot;-&quot;??_)\\ [$%-1]_ ;_ @_ \"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"m17372860\">");
+        wb.println("<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\" ss:WrapText=\"1\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font x:Family=\"Swiss\" ss:Size=\"14\"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"m17372870\">");
+        wb.println("<Alignment ss:Horizontal=\"Left\" ss:Vertical=\"Center\" ss:WrapText=\"1\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\" ss:Bold=\"1\"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"m17372688\" ss:Parent=\"s16\">");
+        wb.println("<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\" ss:WrapText=\"1\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\" ss:Size=\"9\" ss:Bold=\"1\"/>");
+        wb.println("<NumberFormat ss:Format=\"_ * #,##0.00_)\\ [$%-1]_ ;_ * \\(#,##0.00\\)\\ [$%-1]_ ;_ * &quot;-&quot;??_)\\ [$%-1]_ ;_ @_ \"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"m17372698\" ss:Parent=\"s16\">");
+        wb.println("<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\" ss:WrapText=\"1\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\" ss:Size=\"9\" ss:Bold=\"1\"/>");
+        wb.println("<NumberFormat ss:Format=\"_ * #,##0.00_)\\ [$%-1]_ ;_ * \\(#,##0.00\\)\\ [$%-1]_ ;_ * &quot;-&quot;??_)\\ [$%-1]_ ;_ @_ \"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"m17372708\">");
+        wb.println("<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\" ss:WrapText=\"1\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font x:Family=\"Swiss\" ss:Size=\"14\"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"m17372718\">");
+        wb.println("<Alignment ss:Horizontal=\"Left\" ss:Vertical=\"Center\" ss:WrapText=\"1\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\" ss:Bold=\"1\"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"m17372536\" ss:Parent=\"s16\">");
+        wb.println("<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\" ss:WrapText=\"1\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\" ss:Size=\"9\" ss:Bold=\"1\"/>");
+        wb.println("<NumberFormat ss:Format=\"_ * #,##0.00_)\\ [$%-1]_ ;_ * \\(#,##0.00\\)\\ [$%-1]_ ;_ * &quot;-&quot;??_)\\ [$%-1]_ ;_ @_ \"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"m17372546\" ss:Parent=\"s16\">");
+        wb.println("<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\" ss:WrapText=\"1\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\" ss:Size=\"9\" ss:Bold=\"1\"/>");
+        wb.println("<NumberFormat ss:Format=\"_ * #,##0.00_)\\ [$%-1]_ ;_ * \\(#,##0.00\\)\\ [$%-1]_ ;_ * &quot;-&quot;??_)\\ [$%-1]_ ;_ @_ \"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"m17372556\">");
+        wb.println("<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\" ss:WrapText=\"1\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font x:Family=\"Swiss\" ss:Size=\"14\"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"m17372566\">");
+        wb.println("<Alignment ss:Horizontal=\"Left\" ss:Vertical=\"Center\" ss:WrapText=\"1\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\" ss:Bold=\"1\"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"m17378600\">");
+        wb.println("<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\" ss:WrapText=\"1\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\" ss:Size=\"8\" ss:Color=\"#993366\" ss:Bold=\"1\"/>");
+        wb.println("<Interior/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"m17378610\">");
+        wb.println("<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\" ss:WrapText=\"1\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\" ss:Size=\"8\" ss:Color=\"#993366\" ss:Bold=\"1\"/>");
+        wb.println("<Interior/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"m17378620\" ss:Parent=\"s16\">");
+        wb.println("<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\" ss:WrapText=\"1\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\" ss:Size=\"9\" ss:Bold=\"1\"/>");
+        wb.println("<NumberFormat ss:Format=\"_ * #,##0.00_)\\ [$%-1]_ ;_ * \\(#,##0.00\\)\\ [$%-1]_ ;_ * &quot;-&quot;??_)\\ [$%-1]_ ;_ @_ \"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"m17378630\" ss:Parent=\"s16\">");
+        wb.println("<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\" ss:WrapText=\"1\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\" ss:Size=\"9\" ss:Bold=\"1\"/>");
+        wb.println("<NumberFormat ss:Format=\"_ * #,##0.00_)\\ [$%-1]_ ;_ * \\(#,##0.00\\)\\ [$%-1]_ ;_ * &quot;-&quot;??_)\\ [$%-1]_ ;_ @_ \"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"m17378640\">");
+        wb.println("<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\" ss:WrapText=\"1\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font x:Family=\"Swiss\" ss:Size=\"14\"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"m17378650\">");
+        wb.println("<Alignment ss:Horizontal=\"Left\" ss:Vertical=\"Center\" ss:WrapText=\"1\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\" ss:Bold=\"1\"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"m17378320\">");
+        wb.println("<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\" ss:WrapText=\"1\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\" ss:Size=\"8\" ss:Color=\"#FFFFFF\" ss:Bold=\"1\"/>");
+        wb.println("<Interior ss:Color=\"#00CCFF\" ss:Pattern=\"Solid\"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"m17378330\">");
+        wb.println("<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\" ss:WrapText=\"1\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\" ss:Size=\"8\" ss:Color=\"#FFFFFF\" ss:Bold=\"1\"/>");
+        wb.println("<Interior ss:Color=\"#00CCFF\" ss:Pattern=\"Solid\"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"m17378340\">");
+        wb.println("<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\" ss:WrapText=\"1\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\" ss:Size=\"8\" ss:Color=\"#FFFFFF\" ss:Bold=\"1\"/>");
+        wb.println("<Interior ss:Color=\"#00CCFF\" ss:Pattern=\"Solid\"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"m17378350\">");
+        wb.println("<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\" ss:WrapText=\"1\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\" ss:Size=\"8\" ss:Color=\"#FFFFFF\" ss:Bold=\"1\"/>");
+        wb.println("<Interior ss:Color=\"#00CCFF\" ss:Pattern=\"Solid\"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"m17378360\">");
+        wb.println("<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\" ss:WrapText=\"1\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\" ss:Size=\"8\" ss:Color=\"#FFFFFF\" ss:Bold=\"1\"/>");
+        wb.println("<Interior ss:Color=\"#00CCFF\" ss:Pattern=\"Solid\"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"s21\">");
+        wb.println("<Alignment ss:Vertical=\"Center\" ss:WrapText=\"1\"/>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\" ss:Size=\"12\" ss:Bold=\"1\"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"s22\">");
+        wb.println("<Borders/>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"s23\">");
+        wb.println("<Font x:Family=\"Swiss\" ss:Bold=\"1\"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"s29\">");
+        wb.println("<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\" ss:Size=\"8\" ss:Color=\"#FFFFFF\" ss:Bold=\"1\"/>");
+        wb.println("<Interior ss:Color=\"#00CCFF\" ss:Pattern=\"Solid\"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"s31\">");
+        wb.println("<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\" ss:Size=\"8\" ss:Bold=\"1\"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"s32\">");
+        wb.println("<Alignment ss:Horizontal=\"Left\" ss:Vertical=\"Center\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\" ss:Bold=\"1\"/>");
+        wb.println("<Interior ss:Color=\"#FFFF99\" ss:Pattern=\"Solid\"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"s37\">");
+        wb.println("<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Top\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"s38\">");
+        wb.println("<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\" ss:Size=\"8\" ss:Bold=\"1\"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"s39\">");
+        wb.println("<Alignment ss:Horizontal=\"Left\" ss:Vertical=\"Center\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"s40\" ss:Parent=\"s16\">");
+        wb.println("<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\" ss:Color=\"#993366\"/>");
+        wb.println("<Interior/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"s41\">");
+        wb.println("<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\" ss:Size=\"8\" ss:Bold=\"1\"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"s42\">");
+        wb.println("<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"s47\" ss:Parent=\"s16\">");
+        wb.println("<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\" ss:Color=\"#993366\"/>");
+        wb.println("<Interior/>");
+        wb.println("<NumberFormat ss:Format=\"_ * #,##0.00_)\\ [$%-1]_ ;_ * \\(#,##0.00\\)\\ [$%-1]_ ;_ * &quot;-&quot;??_)\\ [$%-1]_ ;_ @_ \"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"s51\">");
+        wb.println("<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"s54\">");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font x:Family=\"Swiss\" ss:Size=\"14\"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"s55\">");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font x:Family=\"Swiss\" ss:Size=\"14\"/>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"s56\">");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("</Style>");
+        wb.println("<Style ss:ID=\"s58\" ss:Parent=\"s16\">");
+        wb.println("<Alignment ss:Horizontal=\"Center\" ss:Vertical=\"Center\"/>");
+        wb.println("<Borders>");
+        wb.println("<Border ss:Position=\"Bottom\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Left\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("<Border ss:Position=\"Right\" ss:LineStyle=\"Continuous\" ss:Weight=\"1\"/>");
+        wb.println("</Borders>");
+        wb.println("<Font ss:FontName=\"Tahoma\" x:Family=\"Swiss\" ss:Color=\"#993366\"/>");
+        wb.println("<Interior/>");
+        wb.println("<NumberFormat ss:Format=\"_ * #,##0.00_)\\ [$%-1]_ ;_ * \\(#,##0.00\\)\\ [$%-1]_ ;_ * &quot;-&quot;??_)\\ [$%-1]_ ;_ @_ \"/>");
+        wb.println("</Style>");
+        wb.println("</Styles>");
+        wb.println("<Worksheet ss:Name=\"Rasio\">");
+        
+        wb.println("<Table ss:ExpandedColumnCount=\"256\" x:FullColumns=\"1\"");
+        wb.println("x:FullRows=\"1\" ss:DefaultRowHeight=\"0\">");
+        wb.println("<Column ss:AutoFitWidth=\"0\" ss:Width=\"4.5\"/>");
+        wb.println("<Column ss:AutoFitWidth=\"0\" ss:Width=\"27.75\"/>");
+        wb.println("<Column ss:AutoFitWidth=\"0\" ss:Width=\"152.25\"/>");
+        wb.println("<Column ss:AutoFitWidth=\"0\" ss:Width=\"66.75\" ss:Span=\"1\"/>");
+        wb.println("<Column ss:Index=\"6\" ss:AutoFitWidth=\"0\" ss:Width=\"57.75\"/>");
+        wb.println("<Column ss:AutoFitWidth=\"0\" ss:Width=\"204\"/>");
+        wb.println("<Column ss:AutoFitWidth=\"0\" ss:Width=\"94.5\" ss:Span=\"1\"/>");
+        wb.println("<Column ss:Index=\"10\" ss:AutoFitWidth=\"0\" ss:Width=\"3.75\"/>");
+        wb.println("<Column ss:Hidden=\"1\" ss:AutoFitWidth=\"0\" ss:Span=\"245\"/>");
+        wb.println("<Row ss:Height=\"12.75\"/>");
+        wb.println("<Row ss:Height=\"15\">");
+        wb.println("<Cell ss:Index=\"2\" ss:MergeAcross=\"5\" ss:StyleID=\"s21\"><Data ss:Type=\"String\">Performasi Keuangan "+company.getName()+"</Data></Cell>");
+        wb.println("<Cell ss:StyleID=\"s22\"/>");
+        wb.println("<Cell ss:StyleID=\"s22\"/>");
+        wb.println("</Row>");
+        wb.println("<Row ss:Height=\"15\">");
+        wb.println("<Cell ss:Index=\"2\" ss:MergeAcross=\"5\" ss:StyleID=\"s21\"><Data ss:Type=\"String\">PER "+rptKonstan.getPeriode().toUpperCase()+"</Data></Cell>");
+        wb.println("<Cell ss:StyleID=\"s22\"/>");
+        wb.println("<Cell ss:StyleID=\"s22\"/>");
+        wb.println("</Row>");
+        wb.println("<Row ss:AutoFitHeight=\"0\" ss:Height=\"6\">");
+        wb.println("<Cell ss:Index=\"2\" ss:StyleID=\"s23\"/>");
+        wb.println("</Row>");
+        wb.println("<Row ss:Height=\"12.75\"/>");
+        wb.println("<Row ss:AutoFitHeight=\"0\" ss:Height=\"18\">");
+        wb.println("<Cell ss:Index=\"2\" ss:MergeDown=\"1\" ss:StyleID=\"m17378320\"><Data");
+        wb.println("ss:Type=\"String\">NO</Data></Cell>");
+        wb.println("<Cell ss:MergeDown=\"1\" ss:StyleID=\"m17378330\"><Data ss:Type=\"String\">RASIO</Data></Cell>");
+        wb.println("<Cell ss:MergeAcross=\"1\" ss:StyleID=\"m17378340\"><Data ss:Type=\"String\">TAHUN</Data></Cell>");
+        wb.println("<Cell ss:MergeDown=\"1\" ss:StyleID=\"m17378350\"><Data ss:Type=\"String\">TREND</Data></Cell>");
+        wb.println("<Cell ss:MergeDown=\"1\" ss:StyleID=\"m17378360\"><Data ss:Type=\"String\">INTERPRETASI </Data></Cell>");
+        wb.println("<Cell ss:MergeDown=\"1\" ss:StyleID=\"m17378600\"><Data ss:Type=\"Number\">"+rptKonstan.getTahun1()+"</Data></Cell>");
+        wb.println("<Cell ss:MergeDown=\"1\" ss:StyleID=\"m17378610\"><Data ss:Type=\"Number\">"+rptKonstan.getTahun2()+"</Data></Cell>");
+        wb.println("</Row>");
+        wb.println("<Row ss:AutoFitHeight=\"0\" ss:Height=\"18\">");
+        wb.println("<Cell ss:Index=\"4\" ss:StyleID=\"s29\"><Data ss:Type=\"Number\">"+rptKonstan.getTahun1()+"</Data></Cell>");
+        wb.println("<Cell ss:StyleID=\"s29\"><Data ss:Type=\"Number\">"+rptKonstan.getTahun2()+"</Data></Cell>");
+        wb.println("</Row>");
+        
+        if(vectorList!=null && vectorList.size()>0){
+            for(int i=0;i<vectorList.size();i++){
+                RptRasioL detail = (RptRasioL)vectorList.get(i);
+                
+                if(detail.getType()==1){
+                    
+                    wb.println("<Row ss:AutoFitHeight=\"0\" ss:Height=\"16.5\">");
+                    wb.println("<Cell ss:Index=\"2\" ss:StyleID=\"s31\"><Data ss:Type=\"String\" x:Ticked=\"1\">"+(i+1)+"</Data></Cell>");
+                    wb.println("<Cell ss:StyleID=\"s32\"><Data ss:Type=\"String\">"+detail.getRasio1()+"</Data></Cell>");
+                    wb.println("<Cell ss:MergeDown=\"3\" ss:StyleID=\"m17378620\"><Data ss:Type=\"Number\">"+detail.getTahun1()+"</Data></Cell>");
+                    wb.println("<Cell ss:MergeDown=\"3\" ss:StyleID=\"m17378630\"><Data ss:Type=\"Number\">"+detail.getTahun2()+"</Data></Cell>");
+                    wb.println("<Cell ss:MergeDown=\"3\" ss:StyleID=\"m17378640\"/>");
+                    wb.println("<Cell ss:MergeDown=\"3\" ss:StyleID=\"m17378650\"><Data ss:Type=\"String\">"+detail.getInter()+"</Data></Cell>");
+                    wb.println("<Cell ss:StyleID=\"s37\"/>");
+                    wb.println("<Cell ss:StyleID=\"s37\"/>");
+                    wb.println("</Row>");
+
+                    wb.println("<Row ss:AutoFitHeight=\"0\" ss:Height=\"16.5\">");
+                    wb.println("<Cell ss:Index=\"2\" ss:StyleID=\"s38\"/>");
+                    wb.println("<Cell ss:StyleID=\"s39\"><Data ss:Type=\"String\">            "+detail.getRasio2()+"</Data></Cell>");
+                    wb.println("<Cell ss:Index=\"8\" ss:StyleID=\"s40\"><Data ss:Type=\"Number\">"+detail.getTahun31()+"</Data></Cell>");
+                    wb.println("<Cell ss:StyleID=\"s40\"><Data ss:Type=\"Number\">"+detail.getTahun41()+"</Data></Cell>");
+                    wb.println("</Row>");
+
+                    wb.println("<Row ss:AutoFitHeight=\"0\" ss:Height=\"16.5\">");
+                    wb.println("<Cell ss:Index=\"2\" ss:StyleID=\"s38\"/>");
+                    wb.println("<Cell ss:StyleID=\"s39\"><Data ss:Type=\"String\">            "+detail.getRasio3()+"</Data></Cell>");
+                    wb.println("<Cell ss:Index=\"8\" ss:StyleID=\"s40\"><Data ss:Type=\"Number\">"+detail.getTahun32()+"</Data></Cell>");
+                    wb.println("<Cell ss:StyleID=\"s40\"><Data ss:Type=\"Number\">"+detail.getTahun42()+"</Data></Cell>");
+                    wb.println("</Row>");
+
+                    wb.println("<Row ss:AutoFitHeight=\"0\" ss:Height=\"16.5\">");
+                    wb.println("<Cell ss:Index=\"2\" ss:StyleID=\"s41\"/>");
+                    wb.println("<Cell ss:StyleID=\"s42\"/>");
+                    wb.println("<Cell ss:Index=\"8\" ss:StyleID=\"s47\"><Data ss:Type=\"Number\">"+detail.getTahun33()+"</Data></Cell>");
+                    wb.println("<Cell ss:StyleID=\"s47\"><Data ss:Type=\"Number\">"+detail.getTahun43()+"</Data></Cell>");
+                    wb.println("</Row>");
+                    
+                }else if(detail.getType()==2 || detail.getType()==3 || detail.getType()==4){
+                    
+                    wb.println("<Row ss:AutoFitHeight=\"0\" ss:Height=\"16.5\">");
+                    wb.println("<Cell ss:Index=\"2\" ss:StyleID=\"s31\"><Data ss:Type=\"String\" x:Ticked=\"1\">"+(i+1)+"</Data></Cell>");
+                    wb.println("<Cell ss:StyleID=\"s32\"><Data ss:Type=\"String\">"+detail.getRasio1()+"</Data></Cell>");
+                    wb.println("<Cell ss:MergeDown=\"3\" ss:StyleID=\"m17372536\"><Data ss:Type=\"Number\">"+detail.getTahun1()+"</Data></Cell>");
+                    wb.println("<Cell ss:MergeDown=\"3\" ss:StyleID=\"m17372546\"><Data ss:Type=\"Number\">"+detail.getTahun2()+"</Data></Cell>");
+                    wb.println("<Cell ss:MergeDown=\"3\" ss:StyleID=\"m17372556\"/>");
+                    wb.println("<Cell ss:MergeDown=\"3\" ss:StyleID=\"m17372566\"><Data ss:Type=\"String\">"+detail.getInter()+"</Data></Cell>");
+                    wb.println("<Cell ss:StyleID=\"s51\"/>");
+                    wb.println("<Cell ss:StyleID=\"s51\"/>");
+                    wb.println("</Row>");
+
+                    wb.println("<Row ss:AutoFitHeight=\"0\" ss:Height=\"16.5\">");
+                    wb.println("<Cell ss:Index=\"2\" ss:StyleID=\"s38\"/>");
+                    wb.println("<Cell ss:StyleID=\"s39\"><Data ss:Type=\"String\">            "+detail.getRasio2()+"</Data></Cell>");
+                    wb.println("<Cell ss:Index=\"8\" ss:StyleID=\"s40\"><Data ss:Type=\"Number\">"+detail.getTahun31()+"</Data></Cell>");
+                    wb.println("<Cell ss:StyleID=\"s40\"><Data ss:Type=\"Number\">"+detail.getTahun41()+"</Data></Cell>");
+                    wb.println("</Row>");
+
+                    wb.println("<Row ss:AutoFitHeight=\"0\" ss:Height=\"16.5\">");
+                    wb.println("<Cell ss:Index=\"2\" ss:StyleID=\"s38\"/>");
+                    wb.println("<Cell ss:StyleID=\"s39\"><Data ss:Type=\"String\">            "+detail.getRasio3()+"</Data></Cell>");
+                    wb.println("<Cell ss:Index=\"8\" ss:StyleID=\"s40\"><Data ss:Type=\"Number\">"+detail.getTahun32()+"</Data></Cell>");
+                    wb.println("<Cell ss:StyleID=\"s40\"><Data ss:Type=\"Number\">"+detail.getTahun42()+"</Data></Cell>");
+                    wb.println("</Row>");
+
+                    wb.println("<Row ss:AutoFitHeight=\"0\" ss:Height=\"16.5\">");
+                    wb.println("<Cell ss:Index=\"2\" ss:StyleID=\"s41\"/>");
+                    wb.println("<Cell ss:StyleID=\"s42\"/>");
+                    wb.println("<Cell ss:Index=\"8\" ss:StyleID=\"s47\"><Data ss:Type=\"Number\">"+detail.getTahun33()+"</Data></Cell>");
+                    wb.println("<Cell ss:StyleID=\"s47\"><Data ss:Type=\"Number\">"+detail.getTahun43()+"</Data></Cell>");
+                    wb.println("</Row>");
+                    
+                }else{
+                    
+                    wb.println("<Row ss:AutoFitHeight=\"0\" ss:Height=\"16.5\">");
+                    wb.println("<Cell ss:Index=\"2\" ss:StyleID=\"s31\"><Data ss:Type=\"String\" x:Ticked=\"1\">"+(i+1)+"</Data></Cell>");
+                    wb.println("<Cell ss:StyleID=\"s32\"><Data ss:Type=\"String\">"+detail.getRasio1()+"</Data></Cell>");
+                    wb.println("<Cell ss:MergeDown=\"3\" ss:StyleID=\"m17378412\"><Data ss:Type=\"Number\">"+detail.getTahun1()+"</Data></Cell>");
+                    wb.println("<Cell ss:MergeDown=\"3\" ss:StyleID=\"m17378422\"><Data ss:Type=\"Number\">"+detail.getTahun2()+"</Data></Cell>");
+                    wb.println("<Cell ss:MergeDown=\"3\" ss:StyleID=\"m17378432\"/>");
+                    wb.println("<Cell ss:MergeDown=\"3\" ss:StyleID=\"m17378442\"><Data ss:Type=\"String\">"+detail.getInter()+"</Data></Cell>");
+                    wb.println("<Cell ss:StyleID=\"s51\"/>");
+                    wb.println("<Cell ss:StyleID=\"s51\"/>");
+                    wb.println("</Row>");
+
+                    wb.println("<Row ss:AutoFitHeight=\"0\" ss:Height=\"16.5\">");
+                    wb.println("<Cell ss:Index=\"2\" ss:StyleID=\"s54\"/>");
+                    wb.println("<Cell ss:StyleID=\"s39\"><Data ss:Type=\"String\">            "+detail.getRasio2()+"</Data></Cell>");
+                    wb.println("<Cell ss:Index=\"8\" ss:StyleID=\"s40\"><Data ss:Type=\"Number\">"+detail.getTahun31()+"</Data></Cell>");
+                    wb.println("<Cell ss:StyleID=\"s40\"><Data ss:Type=\"Number\">"+detail.getTahun41()+"</Data></Cell>");
+                    wb.println("</Row>");
+
+                    wb.println("<Row ss:AutoFitHeight=\"0\" ss:Height=\"16.5\">");
+                    wb.println("<Cell ss:Index=\"2\" ss:StyleID=\"s54\"/>");
+                    wb.println("<Cell ss:StyleID=\"s39\"><Data ss:Type=\"String\">            "+detail.getRasio3()+"</Data></Cell>");
+                    wb.println("<Cell ss:Index=\"8\" ss:StyleID=\"s40\"><Data ss:Type=\"Number\">"+detail.getTahun32()+"</Data></Cell>");
+                    wb.println("<Cell ss:StyleID=\"s40\"><Data ss:Type=\"Number\">"+detail.getTahun42()+"</Data></Cell>");
+                    wb.println("</Row>");
+                    
+                    wb.println("<Row ss:AutoFitHeight=\"0\" ss:Height=\"16.5\">");
+                    wb.println("<Cell ss:Index=\"2\" ss:StyleID=\"s55\"/>");
+                    wb.println("<Cell ss:StyleID=\"s56\"/>");
+                    wb.println("<Cell ss:Index=\"8\" ss:StyleID=\"s58\"><Data ss:Type=\"Number\">"+detail.getTahun33()+"</Data></Cell>");
+                    wb.println("<Cell ss:StyleID=\"s58\"><Data ss:Type=\"Number\">"+detail.getTahun43()+"</Data></Cell>");
+                    wb.println("</Row>");
+                    wb.println("<Row ss:Height=\"12.75\" ss:Span=\"7\"/>");
+                    
+                }
+            }
+        }
+
+        wb.println("</Table>");
+        wb.println("<WorksheetOptions xmlns=\"urn:schemas-microsoft-com:office:excel\">");
+        wb.println("<ZeroHeight/>");
+        wb.println("<Selected/>");
+        wb.println("<DoNotDisplayGridlines/>");
+        wb.println("<TopRowVisible>3</TopRowVisible>");
+        wb.println("<Panes>");
+        wb.println("<Pane>");
+        wb.println("<Number>3</Number>");
+        wb.println("<ActiveCol>5</ActiveCol>");
+        wb.println("</Pane>");
+        wb.println("</Panes>");
+        wb.println("<ProtectObjects>False</ProtectObjects>");
+        wb.println("<ProtectScenarios>False</ProtectScenarios>");
+        wb.println("</WorksheetOptions>");
+        wb.println("</Worksheet>");
+        wb.println("</Workbook>");
+
+        wb.flush() ;
+    }
+    
+    
+    /** Handles the HTTP <code>GET</code> method.
+    * @param request servlet request
+    * @param response servlet response
+    */
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, java.io.IOException {
+        processRequest(request, response);
+    } 
+
+    /** Handles the HTTP <code>POST</code> method.
+    * @param request servlet request
+    * @param response servlet response
+    */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, java.io.IOException {
+        processRequest(request, response);
+    }
+
+    /** Returns a short description of the servlet.
+    */
+    public String getServletInfo() {
+        return "Short description";
+    }
+    
+    public static void main(String[] arg){
+        try{
+            String str = "aku anak cerdas > pandai & rajin";
+
+            System.out.println(URLEncoder.encode(str, "UTF-8"));
+        }
+        catch(Exception e){
+            System.out.println(e.toString());
+        }
+    }
+
+    
+}

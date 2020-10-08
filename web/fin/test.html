@@ -1,0 +1,19 @@
+<!-- 
+    Document   : test
+    Created on : Feb 10, 2015, 10:28:09 AM
+    Author     : Roy
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<h2>Create Text file in JavaScript</h2>
+<script>
+function createFile(){
+var object = new ActiveXObject("Scripting.FileSystemObject");
+var file = object.CreateTextFile("C:\\Hello.txt", false);
+file.WriteLine('Hello World');
+file.WriteLine('Hope is a thing with feathers, that perches on the soul.'); 
+file.Close();
+}
+</script>
+<input type="Button" value="Create File" onClick='createFile()'>
+</html>

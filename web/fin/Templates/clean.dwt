@@ -1,0 +1,75 @@
+ <%@ page language="java"%>
+<%@ page import = "java.util.*" %>
+<%@ page import = "java.sql.*" %>
+<%@ page import = "com.project.util.*" %>
+<%@ page import = "com.project.util.jsp.*" %>
+<%@ page import = "com.project.system.*" %>
+<%@ page import = "com.project.main.db.*" %>
+<%@ page import = "java.util.Date" %>
+<%@ include file="main/javainit.jsp"%>
+<%@ include file="main/check.jsp"%> 
+<%
+//jsp content
+
+
+%>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<!-- #BeginEditable "javascript" -->
+<title>Finance System - PNK</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="css/default.css" rel="stylesheet" type="text/css" />
+<link href="css/css.css" rel="stylesheet" type="text/css" />
+<script language="JavaScript">
+</script>
+<!-- #EndEditable -->
+</head>
+<body leftmargin="0" topmargin="0" marginheight="0" marginwidth="0" bgcolor="#FFFFFF"> 
+<center>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" height="100%">
+        <tr> 
+      <td valign="top"> 
+        <table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0" bordercolor="#CCCCCC">
+          <!--DWLayoutTable-->
+          <tr> 
+            <td width="7" valign="top"  height="40"><img src="<%=approot%>/images/spacer.gif" width="3" height="1"></td>
+            <td height="40" valign="top" > <!-- #BeginEditable "content" --> 
+              <form name="frm_data" method="post" action="">
+                <input type="hidden" name="menu_idx" value="">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                  <tr> 
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr> 
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr> 
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr> 
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                  </tr>
+                </table>
+              </form>
+              <!-- #EndEditable --></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr> 
+      <td height="1" valign="top"><img src="<%=approot%>/images/spacer.gif" width="1" height="1" /></td> 
+    </tr>
+
+    
+  </table>
+</center>
+</body>
+</html>

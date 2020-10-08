@@ -1,0 +1,208 @@
+body,td, form {
+	font-family: Tahoma, Helvetica, sans-serif;
+	font-size: 11px;
+	color: #20280F;
+	margin:0;
+}
+h1{
+	font-size:18px;
+	margin-bottom:4px;
+}
+p{
+	margin:2px 2px 10px 2px;
+	color:#3D4D1B;
+}
+.footer{
+	color:#FFFFFF;
+}
+.tabin{
+	padding:2px 10px 2px 10px;
+	background-color:#516428;
+	border:1px solid #003399;
+	border-bottom:0px solid #3d4d1b;
+	border-color: #516428;
+	color: #FFFFFF;
+}
+.tabcolor{
+	background-color:#003399;
+	padding-left:5px;
+}
+.tablink{
+	font-size:11px;
+}
+a.tablink:link{
+	font-weight:bold;
+	text-decoration:none;
+	color: #FFFFFF;
+}
+a.tablink:visited{
+	font-weight:bold;
+	text-decoration:none;
+	color: #FFFFFF;
+}
+a.tablink:hover{
+	font-weight:bold;
+	text-decoration:none;
+	color: #99FF00;
+}
+a:link, a:visited{
+	text-decoration:none;
+	color: #637724;
+}
+
+a:hover{
+	text-decoration:none;
+	color: #FF6600;
+}
+.page{
+	background-color:#FFFFFF;
+	border:#516428 solid;
+	border-top-style:none;
+	padding:2px 0px 5px;
+; border-width: 1px 0px
+}
+.currtab{
+	color:#3D4D1B;
+	text-decoration:none;
+
+}
+.tabheader{
+	border-bottom:1px solid #516428;
+}
+.container{
+	padding:0 10px;
+}
+.tab{
+	font-size:11px;
+	font-weight:bold;
+	padding:5px 10px 5px 10px;
+	background-color:#FFFFFF;
+	border:1px solid #516428;
+	border-bottom-color:#FFFFFF;
+	
+}
+hr{
+	color:#79963c;
+	height:1px;
+	margin: 0 10px 0 10px;
+	padding:0;
+}
+input,select,textarea{
+	border:solid 1px #79963c;
+	font-family: Tahoma, Helvetica, sans-serif;
+	font-size: 11px;
+}
+.inputborder{
+border:solid 1px #79963c;
+}
+.readonly{
+	color:#666666;
+	background-color:#FFFFCC;
+}
+.rightalign{
+	text-align:right;
+}
+.title{
+	padding:5px 0 3px 10px;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:21px;
+	margin-bottom:0;
+	background-image:none;
+	background-repeat:repeat-y;
+}
+.level1{
+	color:#003300;
+}
+.level2{
+	color:#FF6600;
+}
+
+#list{
+	border-collapse:collapse;
+}
+#list td{
+	padding:2px;
+}
+.tbltitle td{
+	font-weight:bold;
+	color:#FFFFFF;
+	background-color:#79963C;
+	text-align:center;
+}
+.odd td{
+	background-color:#ecf3d9;
+}
+.even td{
+	background-color:#f4fae5;
+}
+.catmenu{
+	background-image:url(../images/catmenu-bg.gif);
+	padding:3px 2px 3px 0;
+	font-weight:bold;
+	border-bottom:solid 1px #79963c;
+}
+.catmenu table tr td{
+	font-weight:bold;
+}
+.catmenu a:link, .catmenu a:visited{
+	color:#20280F;
+}
+.menu1{
+	padding:2px 1px 2px 25px;
+	font-weight:bold;
+}
+.menu1 a:link, .menu1 a:visited{
+	color: #38471B;
+}
+.menu2{
+	padding:2px 0 2px 40px;
+}
+.bottborder{
+	border-bottom:solid 1px #79963c;
+}
+.menu2 a:link, .menu2 a:visited{
+	color: #20280F;
+}
+.catmenu a:hover, .menu1 a:hover,.menu2 a:hover{
+	color: #009900;
+}
+
+
+
+.warning{
+	border:solid 1px #ffa200;
+	background-color:#fbfcb8;
+	font-weight:bold;
+}
+.warning td{
+	color:#fd1402;
+}
+.success{
+	border:solid 1px #3caf2b;
+	background-color:#f2fed5;
+	font-weight:bold;
+}
+.success td{
+		color:#2f8b22;
+}
+.info{
+	border:solid 1px #1f64c6;
+	background-color:#eff2fe;
+	font-weight:bold;
+}
+.info td{
+	color:#1f64c6;
+}
+.errfont {  color: #FF0000}
+.tablehdr {  font-weight: bold; color: #FFFFFF; background-color: #79963C; text-align: center}
+.tablecell {  background-color: #ecf3d9}
+.tablecell1 {  background-color: #f4fae5}
+.boxed {  border: 1px #516428 solid; padding-top: 3px; padding-right: 3px; padding-bottom: 3px; padding-left: 3px}
+.boxed1 {  padding-top: 2px; padding-bottom: 5px; border: solid; border-color: #006F00 #006f00 #006f00; padding-right: 0px; padding-left: 0px; border-width: 1px 0px}
+.notincluded {  background-color: #CCCCCC}
+.tablehdr1 {  font-weight: bold; background-color: #B0C55F}
+.tablecell3 {  font-weight: bold; background-color: #B8D293}
+.lvl1 {  font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold; color: #660000}
+.lvl2 {  font-family: Arial, Helvetica, sans-serif; font-size: 12px; font-weight: bold; color: #CC0000}
+.tit1 {  font-family: Arial, Helvetica, sans-serif; font-size: 16px}
+.list {  background-color: #FFFFFF; border: #336600; border-style: solid; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px}

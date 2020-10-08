@@ -1,0 +1,27 @@
+package id2tflbd1sgnxlxd1sj4cgg;
+
+/**
+@version 2.0
+@physicalPackage
+@__modelType diagram 
+*/
+class diagram {
+/**
+@__ref <oiref:java#Class#com.wihita.util.lang.I_Language:oiref><oihard>
+@__modelType reference 
+*/
+class reference {
+}}/**
+@__tags
+@shapeType ClassDiagram 
+*/
+class __tags {
+}/**
+@__options 
+*/
+class __options {
+}/**
+@__positions <oigroup:<oiref:java#Class#com.wihita.util.lang.I_Language:oiref>=47,28,203,124,1:oigroup>
+*/
+class __positions {
+}

@@ -1,0 +1,1 @@
+D:\Program Files\Java\jdk1.6.0\bin\java -classpath d:\javaclass\jdom.jar;d:\javaclass\xml.jar;d:\javaclass\postgresql.jar;d:\javaclass\xerces.jar;d:\javaclass\parser.jar; com.project.printman.PrintManSvc %1

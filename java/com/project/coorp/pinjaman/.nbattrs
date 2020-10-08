@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE attributes PUBLIC "-//NetBeans//DTD DefaultAttributes 1.0//EN" "http://www.netbeans.org/dtds/attributes-1_0.dtd">
+<attributes version="1.0">
+    <fileobject name="CmdPinjaman.java">
+        <attr name="class_dependency_com.project.util.jsp.Control" stringvalue="CmdPinjaman"/>
+        <attr name="class_dependency_com.project.util.lang.I_Language" stringvalue="CmdPinjaman"/>
+    </fileobject>
+    <fileobject name="DbPeriodeRekap.java">
+        <attr name="class_dependency_com.project.main.db.CONHandler" stringvalue="DbPeriodeRekap"/>
+        <attr name="class_dependency_com.project.main.db.I_CONInterface" stringvalue="DbPeriodeRekap"/>
+        <attr name="class_dependency_com.project.main.db.I_CONType" stringvalue="DbPeriodeRekap"/>
+        <attr name="class_dependency_com.project.main.entity.I_PersintentExc" stringvalue="DbPeriodeRekap"/>
+    </fileobject>
+    <fileobject name="DbPinjamanDetail.java">
+        <attr name="class_dependency_com.project.main.db.CONHandler" stringvalue="DbPinjamanDetail"/>
+        <attr name="class_dependency_com.project.main.db.I_CONInterface" stringvalue="DbPinjamanDetail"/>
+        <attr name="class_dependency_com.project.main.db.I_CONType" stringvalue="DbPinjamanDetail"/>
+        <attr name="class_dependency_com.project.main.entity.I_PersintentExc" stringvalue="DbPinjamanDetail"/>
+        <attr name="class_dependency_com.project.util.lang.I_Language" stringvalue="DbPinjamanDetail"/>
+    </fileobject>
+    <fileobject name="DbRekapMain.java">
+        <attr name="class_dependency_com.project.main.db.CONHandler" stringvalue="DbRekapMain"/>
+        <attr name="class_dependency_com.project.main.db.I_CONInterface" stringvalue="DbRekapMain"/>
+        <attr name="class_dependency_com.project.main.db.I_CONType" stringvalue="DbRekapMain"/>
+        <attr name="class_dependency_com.project.main.entity.I_PersintentExc" stringvalue="DbRekapMain"/>
+        <attr name="class_dependency_com.project.util.lang.I_Language" stringvalue="DbRekapMain"/>
+    </fileobject>
+    <fileobject name="DbRekapPotonganGaji.java">
+        <attr name="class_dependency_com.project.main.db.CONHandler" stringvalue="DbRekapPotonganGaji"/>
+        <attr name="class_dependency_com.project.main.db.I_CONInterface" stringvalue="DbRekapPotonganGaji"/>
+        <attr name="class_dependency_com.project.main.db.I_CONType" stringvalue="DbRekapPotonganGaji"/>
+        <attr name="class_dependency_com.project.main.entity.I_PersintentExc" stringvalue="DbRekapPotonganGaji"/>
+        <attr name="class_dependency_com.project.util.lang.I_Language" stringvalue="DbRekapPotonganGaji"/>
+    </fileobject>
+    <fileobject name="DbTabunganSetup.java">
+        <attr name="class_dependency_com.project.main.db.CONHandler" stringvalue="DbTabunganSetup"/>
+        <attr name="class_dependency_com.project.main.db.I_CONInterface" stringvalue="DbTabunganSetup"/>
+        <attr name="class_dependency_com.project.main.db.I_CONType" stringvalue="DbTabunganSetup"/>
+        <attr name="class_dependency_com.project.main.entity.I_PersintentExc" stringvalue="DbTabunganSetup"/>
+        <attr name="class_dependency_com.project.util.lang.I_Language" stringvalue="DbTabunganSetup"/>
+    </fileobject>
+    <fileobject name="JspTabunganSukarela.java">
+        <attr name="class_dependency_com.project.util.jsp.I_JSPInterface" stringvalue="JspTabunganSukarela"/>
+        <attr name="class_dependency_com.project.util.jsp.I_JSPType" stringvalue="JspTabunganSukarela"/>
+        <attr name="class_dependency_com.project.util.jsp.JSPHandler" stringvalue="JspTabunganSukarela"/>
+    </fileobject>
+    <fileobject name="SimpananMember.java">
+        <attr name="class_dependency_com.project.main.entity.Entity" stringvalue="SimpananMember"/>
+    </fileobject>
+    <fileobject name="TabunganSukarela.java">
+        <attr name="class_dependency_com.project.main.entity.Entity" stringvalue="TabunganSukarela"/>
+    </fileobject>
+</attributes>
