@@ -46,7 +46,9 @@ public class JspReceive extends JSPHandler implements I_JSPInterface, I_JSPType 
     public static final int JSP_PAYMENT_STATUS_POSTED = 31;    
     public static final int JSP_NO_PAJAK = 32;
     public static final int JSP_TYPE_INC = 33;    
-    public static final int JSP_REFERENCE_ID = 34;    
+    public static final int JSP_REFERENCE_ID = 34;
+    public static final int JSP_PRICE_INCLUDE_TAX = 35;
+    public static final int JSP_RATE = 36;
     
     public static String[] colNames = {
         "JSP_EXCHANGERATE_ID", "JSP_DATE",
@@ -67,7 +69,8 @@ public class JspReceive extends JSPHandler implements I_JSPInterface, I_JSPType 
         "JSP_PERIOD_ID","JSP_COA_ID",
         "JSP_TYPE_AP","JSP_PAYMENT_STATUS_POSTED",
         "JSP_NO_PAJAK","JSP_TYPE_INC",
-        "JSP_REFERENCE_ID"
+        "JSP_REFERENCE_ID",
+        "JSP_PRICE_INCLUDE_TAX", "RATE"
     };    
     
     public static int[] fieldTypes = {
@@ -90,7 +93,8 @@ public class JspReceive extends JSPHandler implements I_JSPInterface, I_JSPType 
         TYPE_LONG,TYPE_LONG,
         TYPE_INT, TYPE_INT,
         TYPE_STRING, TYPE_INT,
-        TYPE_LONG
+        TYPE_LONG,
+        TYPE_INT, TYPE_FLOAT
     };
 
     public JspReceive() {
@@ -162,7 +166,9 @@ public class JspReceive extends JSPHandler implements I_JSPInterface, I_JSPType 
             receive.setPaymentStatusPosted(getInt(JSP_PAYMENT_STATUS_POSTED));
             receive.setNoPajak(getString(JSP_NO_PAJAK));
             receive.setTypeInc(getInt(JSP_TYPE_INC));  
-            receive.setReferenceId(getLong(JSP_REFERENCE_ID));  
+            receive.setReferenceId(getLong(JSP_REFERENCE_ID));
+            receive.setPriceIncludeTax(getInt(JSP_PRICE_INCLUDE_TAX));
+            receive.setRate(getDouble(JSP_RATE));
         } catch (Exception e) {
             System.out.println("Error on requestEntityObject : " + e.toString());
         }

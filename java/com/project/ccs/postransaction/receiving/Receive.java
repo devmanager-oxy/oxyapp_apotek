@@ -27,6 +27,8 @@ public class Receive extends Entity {
     private String number = "";
     private int counter;
     private long currencyId;
+    private int priceIncludeTax;
+    private double rate;
    
 
     /**
@@ -506,5 +508,20 @@ public class Receive extends Entity {
         this.referenceId = referenceId;
     }
 
-    
+    public int getPriceIncludeTax() {
+        return priceIncludeTax;
+    }
+
+    public void setPriceIncludeTax(int priceIncludeTax) {
+        this.priceIncludeTax = priceIncludeTax;
+    }
+
+    public double getRate() {
+        return rate;
+    }
+
+    public void setRate(double rate) {
+        this.rate = rate;
+    }
+
 }

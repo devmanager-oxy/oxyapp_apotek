@@ -21,6 +21,10 @@ public class DbVendorItem extends CONHandler implements I_CONInterface, I_CONTyp
 
     public static final int COL_REAL_PRICE = 9;
     public static final int COL_PRICE_MARGIN = 10;
+    public static final int COL_ITEM_VENDOR_CODE = 11;
+    public static final int COL_UOM_PURCHASE = 12;
+    public static final int COL_DELIVERY_UNIT = 13;
+    public static final int COL_CONV_QTY = 14;
 
     public static final String[] colNames = {
         "vendor_item_id",
@@ -33,7 +37,11 @@ public class DbVendorItem extends CONHandler implements I_CONInterface, I_CONTyp
         "reg_dis_val",
         "reg_dis_percent",
         "real_price",
-        "margin_price"
+        "margin_price",
+        "item_vendor_code",
+        "uom_purchase",
+        "delivery_unit",
+        "conv_qty"
     };
     public static final int[] fieldTypes = {
         TYPE_LONG + TYPE_PK + TYPE_ID,
@@ -46,6 +54,10 @@ public class DbVendorItem extends CONHandler implements I_CONInterface, I_CONTyp
         TYPE_FLOAT,
         TYPE_FLOAT,
         TYPE_FLOAT,
+        TYPE_FLOAT,
+        TYPE_STRING,
+        TYPE_LONG,
+        TYPE_INT,
         TYPE_FLOAT
     };
 
@@ -139,6 +151,11 @@ public class DbVendorItem extends CONHandler implements I_CONInterface, I_CONTyp
             vendoritem.setRealPrice(pstVendorItem.getdouble(COL_REAL_PRICE));
             vendoritem.setMarginPrice(pstVendorItem.getdouble(COL_PRICE_MARGIN));
 
+            vendoritem.setItemVendorCode(pstVendorItem.getString(COL_ITEM_VENDOR_CODE ));
+            vendoritem.setUomPurchase(pstVendorItem.getlong(COL_UOM_PURCHASE));
+            vendoritem.setDeliveryUnit(pstVendorItem.getInt(COL_DELIVERY_UNIT));
+            vendoritem.setConvQty(pstVendorItem.getdouble(14));
+
             return vendoritem;
         } catch (CONException dbe) {
             throw dbe;
@@ -162,6 +179,10 @@ public class DbVendorItem extends CONHandler implements I_CONInterface, I_CONTyp
 
             pstVendorItem.setDouble(COL_REAL_PRICE, vendoritem.getRealPrice());
             pstVendorItem.setDouble(COL_PRICE_MARGIN, vendoritem.getMarginPrice());
+            pstVendorItem.setString(COL_ITEM_VENDOR_CODE, vendoritem.getItemVendorCode());
+            pstVendorItem.setLong(COL_UOM_PURCHASE, vendoritem.getUomPurchase());
+            pstVendorItem.setInt(COL_DELIVERY_UNIT, vendoritem.getDeliveryUnit());
+            pstVendorItem.setDouble(COL_CONV_QTY, vendoritem.getConvQty());
             pstVendorItem.insert();
             vendoritem.setOID(pstVendorItem.getlong(COL_VENDOR_ITEM_ID));
         } catch (CONException dbe) {
@@ -188,6 +209,10 @@ public class DbVendorItem extends CONHandler implements I_CONInterface, I_CONTyp
 
                 pstVendorItem.setDouble(COL_REAL_PRICE, vendoritem.getRealPrice());
                 pstVendorItem.setDouble(COL_PRICE_MARGIN, vendoritem.getMarginPrice());
+                pstVendorItem.setString(COL_ITEM_VENDOR_CODE, vendoritem.getItemVendorCode());
+                pstVendorItem.setLong(COL_UOM_PURCHASE, vendoritem.getUomPurchase());
+                pstVendorItem.setInt(COL_DELIVERY_UNIT, vendoritem.getDeliveryUnit());
+                pstVendorItem.setDouble(COL_CONV_QTY, vendoritem.getConvQty());
                 pstVendorItem.update();
                 return vendoritem.getOID();
 
@@ -260,6 +285,10 @@ public class DbVendorItem extends CONHandler implements I_CONInterface, I_CONTyp
 
             vendoritem.setRealPrice(rs.getDouble(DbVendorItem.colNames[DbVendorItem.COL_REAL_PRICE]));
             vendoritem.setMarginPrice(rs.getDouble(DbVendorItem.colNames[DbVendorItem.COL_PRICE_MARGIN]));
+            vendoritem.setItemVendorCode(rs.getString(DbVendorItem.colNames[COL_ITEM_VENDOR_CODE]));
+            vendoritem.setUomPurchase(rs.getLong(DbVendorItem.colNames[COL_UOM_PURCHASE]));
+            vendoritem.setDeliveryUnit(rs.getInt(DbVendorItem.colNames[COL_DELIVERY_UNIT]));
+            vendoritem.setConvQty(rs.getDouble(DbVendorItem.colNames[COL_CONV_QTY]));
         } catch (Exception e) {
         }
     }

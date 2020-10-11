@@ -3,14 +3,14 @@
 <%@ page import="com.project.main.db.*"%>
 <%  
     String rootSystemTitle = "OxySystem";    
-    String rootapproot="/oxyapp_general";   
-    String rootimageroot ="/oxyapp_general/";  
-    String rootprintroot="/oxyapp_general"; 
-    String rootprintrootinv="/oxyapp_general";    
-    String rootapprootx = "/oxyapp_general"; 
-    String rootprintroot2 = "/oxyapp_general";    
-    String rootprintrootproperty="/oxyapp_general";  
-    String rootLogout = "/oxyapp_general";        
+    String rootapproot="/oxyapp_apotek";
+    String rootimageroot ="/oxyapp_apotek/";
+    String rootprintroot="/oxyapp_apotek";
+    String rootprintrootinv="/oxyapp_apotek";
+    String rootapprootx = "/oxyapp_apotek";
+    String rootprintroot2 = "/oxyapp_apotek";
+    String rootprintrootproperty="/oxyapp_apotek";
+    String rootLogout = "/oxyapp_apotek";
     
     String systemTitle  = "Finance System";      
     String spTitle      = "Simpan Pinjam";

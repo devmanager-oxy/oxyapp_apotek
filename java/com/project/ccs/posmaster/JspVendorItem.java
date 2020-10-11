@@ -20,20 +20,30 @@ public class JspVendorItem extends JSPHandler implements I_JSPInterface, I_JSPTy
     public static final int JSP_REAL_PRICE = 9;
     public static final int JSP_MARGIN_PRICE = 10;
 
+    public static final int JSP_ITEM_VENDOR_CODE = 11;
+    public static final int JSP_UOM_PURCHASE = 12;
+    public static final int JSP_DELIVERY_UNIT = 13;
+    public static final int JSP_CONV_QTY = 14;
+
     public static String[] colNames = {
         "JSP_VENDOR_ITEM_ID", "JSP_ITEM_MASTER_ID",
         "JSP_VENDOR_ID", "JSP_LAST_PRICE",
         "JSP_LAST_DISCOUNT", "JSP_UPDATE_DATE",
         "JSP_LAST_DIS_PERCENT", "JSP_REG_DIS_VAL",
         "JSP_REG_DIS_PERCENT","JSP_REAL_PRICE",
-        "JSP_MARGIN_PRICE"
+        "JSP_MARGIN_PRICE",
+        "JSP_ITEM_VENDOR_CODE", "JSP_UOM_PURCHASE",
+        "JSP_DELIVERY_UNIT", "JSP_CONV_QTY"
     };
     public static int[] fieldTypes = {
         TYPE_LONG, TYPE_LONG + ENTRY_REQUIRED,
         TYPE_LONG + ENTRY_REQUIRED, TYPE_FLOAT,
-        TYPE_FLOAT, TYPE_DATE, TYPE_FLOAT,
+        TYPE_FLOAT, TYPE_DATE, 
         TYPE_FLOAT, TYPE_FLOAT,
-        TYPE_FLOAT, TYPE_FLOAT
+        TYPE_FLOAT, TYPE_FLOAT,
+        TYPE_FLOAT,
+        TYPE_STRING, TYPE_LONG,
+        TYPE_INT ,TYPE_FLOAT
     };
 
     public JspVendorItem() {
@@ -82,6 +92,11 @@ public class JspVendorItem extends JSPHandler implements I_JSPInterface, I_JSPTy
 
             vendorItem.setRealPrice(getDouble(JSP_REAL_PRICE));
             vendorItem.setMarginPrice(getDouble(JSP_MARGIN_PRICE));
+
+            vendorItem.setItemVendorCode(getString(JSP_ITEM_VENDOR_CODE));
+            vendorItem.setUomPurchase(getLong(JSP_UOM_PURCHASE));
+            vendorItem.setDeliveryUnit(getInt(JSP_DELIVERY_UNIT));
+            vendorItem.setConvQty(getDouble(JSP_CONV_QTY));
         } catch (Exception e) {
             System.out.println("Error on requestEntityObject : " + e.toString());
         }

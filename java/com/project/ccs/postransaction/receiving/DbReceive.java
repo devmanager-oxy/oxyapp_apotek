@@ -84,7 +84,9 @@ public class DbReceive extends CONHandler implements I_CONInterface, I_CONType, 
     public static final int COL_PAYMENT_STATUS_POSTED = 36;
     public static final int COL_NO_PAJAK = 37;
     public static final int COL_TYPE_INC = 38;
-    public static final int COL_REFERENCE_ID = 39;    
+    public static final int COL_REFERENCE_ID = 39;
+    public static final int COL_PRICE_INCLUDE_TAX = 40;
+    public static final int COL_RATE = 41;
     
     public static final String[] colNames = {
         "receive_id",
@@ -126,7 +128,9 @@ public class DbReceive extends CONHandler implements I_CONInterface, I_CONType, 
         "payment_status_posted",
         "no_pajak",
         "type_inc",
-        "reference_id"        
+        "reference_id",
+        "price_include_tax",
+        "rate"
     };
     
     public static final int[] fieldTypes = {
@@ -168,7 +172,8 @@ public class DbReceive extends CONHandler implements I_CONInterface, I_CONType, 
         TYPE_INT,
         TYPE_INT,
         TYPE_STRING,
-        TYPE_INT, TYPE_LONG        
+        TYPE_INT, TYPE_LONG,
+        TYPE_INT, TYPE_FLOAT
     };
     
     public static int INCLUDE_TAX_NO = 0;
@@ -305,7 +310,9 @@ public class DbReceive extends CONHandler implements I_CONInterface, I_CONType, 
             receive.setPaymentStatusPosted(dbReceiveRequest.getInt(COL_PAYMENT_STATUS_POSTED));
             receive.setNoPajak(dbReceiveRequest.getString(COL_NO_PAJAK));
             receive.setTypeInc(dbReceiveRequest.getInt(COL_TYPE_INC));
-            receive.setReferenceId(dbReceiveRequest.getlong(COL_REFERENCE_ID));               
+            receive.setReferenceId(dbReceiveRequest.getlong(COL_REFERENCE_ID));
+            receive.setPriceIncludeTax(dbReceiveRequest.getInt(COL_PRICE_INCLUDE_TAX));
+            receive.setRate(dbReceiveRequest.getdouble(COL_RATE));
             return receive;
         } catch (CONException dbe) {
             throw dbe;
@@ -356,7 +363,9 @@ public class DbReceive extends CONHandler implements I_CONInterface, I_CONType, 
             dbReceiveRequest.setInt(COL_PAYMENT_STATUS_POSTED, receive.getPaymentStatusPosted());
             dbReceiveRequest.setString(COL_NO_PAJAK, receive.getNoPajak());
             dbReceiveRequest.setInt(COL_TYPE_INC, receive.getTypeInc());
-            dbReceiveRequest.setLong(COL_REFERENCE_ID, receive.getReferenceId()); 
+            dbReceiveRequest.setLong(COL_REFERENCE_ID, receive.getReferenceId());
+            dbReceiveRequest.setInt(COL_PRICE_INCLUDE_TAX, receive.getPriceIncludeTax());
+            dbReceiveRequest.setDouble(COL_RATE, receive.getRate());
             dbReceiveRequest.insert();
             receive.setOID(dbReceiveRequest.getlong(COL_RECEIVE_ID));
         } catch (CONException dbe) {
@@ -409,7 +418,9 @@ public class DbReceive extends CONHandler implements I_CONInterface, I_CONType, 
                 dbReceiveRequest.setInt(COL_PAYMENT_STATUS_POSTED, receive.getPaymentStatusPosted());
                 dbReceiveRequest.setString(COL_NO_PAJAK, receive.getNoPajak()); 
                 dbReceiveRequest.setInt(COL_TYPE_INC, receive.getTypeInc()); 
-                dbReceiveRequest.setLong(COL_REFERENCE_ID, receive.getReferenceId()); 
+                dbReceiveRequest.setLong(COL_REFERENCE_ID, receive.getReferenceId());
+                dbReceiveRequest.setInt(COL_PRICE_INCLUDE_TAX, receive.getPriceIncludeTax());
+                dbReceiveRequest.setDouble(COL_RATE, receive.getRate());
                 dbReceiveRequest.update();
                 return receive.getOID();
             }
@@ -662,6 +673,8 @@ public class DbReceive extends CONHandler implements I_CONInterface, I_CONType, 
             receive.setNoPajak(rs.getString(DbReceive.colNames[DbReceive.COL_NO_PAJAK]));
             receive.setTypeInc(rs.getInt(DbReceive.colNames[DbReceive.COL_TYPE_INC]));
             receive.setReferenceId(rs.getLong(DbReceive.colNames[DbReceive.COL_REFERENCE_ID]));
+            receive.setPriceIncludeTax(rs.getInt(DbReceive.colNames[COL_PRICE_INCLUDE_TAX]));
+            receive.setRate(rs.getDouble(DbReceive.colNames[COL_RATE]));
         } catch (Exception e) {}
     }
 

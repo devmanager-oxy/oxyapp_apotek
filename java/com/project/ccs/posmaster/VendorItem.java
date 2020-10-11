@@ -17,6 +17,11 @@ public class VendorItem extends Entity {
     private double realPrice;
     private double marginPrice;
 
+    private String itemVendorCode;
+    private long uomPurchase;
+    private int deliveryUnit;
+    private double convQty;
+
     public double getMarginPrice() {
         return marginPrice;
     }
@@ -96,4 +101,37 @@ public class VendorItem extends Entity {
     public void setLastDisVal(double lastDisVal) {
         this.lastDisVal = lastDisVal;
     }
+
+    public double getConvQty() {
+        return convQty;
+    }
+
+    public void setConvQty(double convQty) {
+        this.convQty = convQty;
+    }
+
+    public int getDeliveryUnit() {
+        return deliveryUnit;
+    }
+
+    public void setDeliveryUnit(int deliveryUnit) {
+        this.deliveryUnit = deliveryUnit;
+    }
+
+    public String getItemVendorCode() {
+        return itemVendorCode;
+    }
+
+    public void setItemVendorCode(String itemVendorCode) {
+        this.itemVendorCode = itemVendorCode;
+    }
+
+    public long getUomPurchase() {
+        return uomPurchase;
+    }
+
+    public void setUomPurchase(long uomPurchase) {
+        this.uomPurchase = uomPurchase;
+    }
+    
 }
