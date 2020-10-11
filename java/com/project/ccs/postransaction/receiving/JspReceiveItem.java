@@ -32,6 +32,17 @@ public class JspReceiveItem extends JSPHandler implements I_JSPInterface, I_JSPT
     public static final int JSP_BEA = 17;
     public static final int JSP_KOMISI = 18;
     public static final int JSP_LAIN_LAIN = 19;
+    public static final int JSP_UOM_PURCHASE_ID = 20;
+    public static final int JSP_QTY_PURCHASE = 21;
+    public static final int JSP_DIS_1_VAL = 22;
+    public static final int JSP_DIS_2_VAL = 23;
+    public static final int JSP_DIS_1_PERCENT = 24;
+    public static final int JSP_DIS_2_PERCENT = 25;
+    public static final int JSP_DIS_3_VAL = 26;
+    public static final int JSP_DIS_4_VAL = 27;
+    public static final int JSP_DIS_3_PERCENT = 28;
+    public static final int JSP_DIS_4_PERCENT = 29;
+    public static final int JSP_BACTH_NUMBER = 30;
     
     public static String[] colNames = {
         "itm_JSP_RECEIVE_ID", "itm_JSP_ITEM_MASTER_ID",
@@ -43,7 +54,13 @@ public class JspReceiveItem extends JSPHandler implements I_JSPInterface, I_JSPT
         "JSP_AP_COA_ID","ITM_JSP_TYPE",
         "JSP_IS_BONUS","JSP_MEMO","JSP_PRICE_IMPORT",
         "JSP_TRANSPORT","JSP_BEA","JSP_KOMISI",
-        "JSP_LAIN_LAIN"
+        "JSP_LAIN_LAIN",
+        "JSP_UOM_PURCHASE_ID", "JSP_QTY_PURCHASE",
+        "JSP_DIS_1_VAL", "JSP_DIS_2_VAL",
+        "JSP_DIS_1_PERCENT", "JSP_DIS_2_PERCENT",
+        "JSP_DIS_3_VAL", "JSP_DIS_4_VAL",
+        "JSP_DIS_3_PERCENT", "JSP_DIS_4_PERCENT",
+        "JSP_BATCH_NUMBER"
     };
     
     public static int[] fieldTypes = {
@@ -56,7 +73,13 @@ public class JspReceiveItem extends JSPHandler implements I_JSPInterface, I_JSPT
         TYPE_INT,TYPE_STRING,
         TYPE_FLOAT,TYPE_FLOAT,
         TYPE_FLOAT,TYPE_FLOAT,
-        TYPE_FLOAT
+        TYPE_FLOAT,
+        TYPE_LONG, TYPE_FLOAT,
+        TYPE_FLOAT, TYPE_FLOAT,
+        TYPE_FLOAT, TYPE_FLOAT,
+        TYPE_FLOAT, TYPE_FLOAT,
+        TYPE_FLOAT, TYPE_FLOAT,
+        TYPE_STRING
     };
 
     public JspReceiveItem() {
@@ -114,6 +137,17 @@ public class JspReceiveItem extends JSPHandler implements I_JSPInterface, I_JSPT
             receiveItem.setBea(getDouble(JSP_BEA));
             receiveItem.setKomisi(getDouble(JSP_KOMISI));
             receiveItem.setLainLain(getDouble(JSP_LAIN_LAIN));
+            receiveItem.setUomPurchaseId(getLong(JSP_UOM_PURCHASE_ID));
+            receiveItem.setQtyPurchase(getDouble(JSP_QTY_PURCHASE));
+            receiveItem.setDis1Percent(getDouble(JSP_DIS_1_PERCENT));
+            receiveItem.setDis1Val(getDouble(JSP_DIS_1_VAL));
+            receiveItem.setDis2Percent(getDouble(JSP_DIS_2_PERCENT));
+            receiveItem.setDis2Val(getDouble(JSP_DIS_2_VAL));
+            receiveItem.setDis3Percent(getDouble(JSP_DIS_3_PERCENT));
+            receiveItem.setDis3Val(getDouble(JSP_DIS_3_VAL));
+            receiveItem.setDis4Percent(getDouble(JSP_DIS_4_PERCENT));
+            receiveItem.setDis4Val(getDouble(JSP_DIS_4_VAL));
+            receiveItem.setBatchNumber(getString(JSP_BACTH_NUMBER));
             
         } catch (Exception e) {
             System.out.println("Error on requestEntityObject : " + e.toString());

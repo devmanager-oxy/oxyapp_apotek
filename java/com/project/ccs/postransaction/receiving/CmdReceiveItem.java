@@ -124,6 +124,8 @@ public class CmdReceiveItem extends Control implements I_Language {
                 
                 //add update item hanya boleh saat draft
                 if(!receive.getStatus().equals(I_Project.DOC_STATUS_DRAFT)){
+                    JspReceiveItem jspReceiveItem = this.jspReceiveItem;
+                    JspReceiveItem jspReceiveItem2 = this.jspReceiveItem;
                     jspReceiveItem.addError(jspReceiveItem.JSP_QTY, "Error, document have been locked for update");
                 }
                 
@@ -153,7 +155,7 @@ public class CmdReceiveItem extends Control implements I_Language {
 
                 if (receiveItem.getOID() == 0){
                     try {
-                         if(CheckItemId(receiveItem.getItemMasterId(),oidReceive)){
+                         if(CheckItemId(receiveItem.getItemMasterId(),oidReceive) && receiveItem.getIsBonus() == 0){
                             msgString = JSPMessage.getMsg(JSPMessage.MSG_DATA_EXIST);
                             return RSLT_EST_CODE_EXIST;
                         } 

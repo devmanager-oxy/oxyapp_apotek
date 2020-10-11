@@ -40,6 +40,20 @@ public class ReceiveItem extends Entity {
     private double bea;
     private double komisi;
     private double lainLain;
+
+    private double qtyPurchase;
+    private long uomPurchaseId;
+
+    private double dis1Percent;
+    private double dis1Val;
+    private double dis2Percent;
+    private double dis2Val;
+    private double dis3Percent;
+    private double dis3Val;
+    private double dis4Percent;
+    private double dis4Val;
+
+    private String batchNumber = "";
     
     public double getAmount() {
         return amount;
@@ -223,6 +237,94 @@ public class ReceiveItem extends Entity {
 
     public void setLainLain(double lainLain) {
         this.lainLain = lainLain;
+    }
+
+    public String getBatchNumber() {
+        return batchNumber;
+    }
+
+    public void setBatchNumber(String batchNumber) {
+        this.batchNumber = batchNumber;
+    }
+
+    public double getDis1Percent() {
+        return dis1Percent;
+    }
+
+    public void setDis1Percent(double dis1Percent) {
+        this.dis1Percent = dis1Percent;
+    }
+
+    public double getDis1Val() {
+        return dis1Val;
+    }
+
+    public void setDis1Val(double dis1Val) {
+        this.dis1Val = dis1Val;
+    }
+
+    public double getDis2Percent() {
+        return dis2Percent;
+    }
+
+    public void setDis2Percent(double dis2Percent) {
+        this.dis2Percent = dis2Percent;
+    }
+
+    public double getDis2Val() {
+        return dis2Val;
+    }
+
+    public void setDis2Val(double dis2Val) {
+        this.dis2Val = dis2Val;
+    }
+
+    public double getDis3Percent() {
+        return dis3Percent;
+    }
+
+    public void setDis3Percent(double dis3Percent) {
+        this.dis3Percent = dis3Percent;
+    }
+
+    public double getDis3Val() {
+        return dis3Val;
+    }
+
+    public void setDis3Val(double dis3Val) {
+        this.dis3Val = dis3Val;
+    }
+
+    public double getDis4Percent() {
+        return dis4Percent;
+    }
+
+    public void setDis4Percent(double dis4Percent) {
+        this.dis4Percent = dis4Percent;
+    }
+
+    public double getDis4Val() {
+        return dis4Val;
+    }
+
+    public void setDis4Val(double dis4Val) {
+        this.dis4Val = dis4Val;
+    }
+
+    public double getQtyPurchase() {
+        return qtyPurchase;
+    }
+
+    public void setQtyPurchase(double qtyPurchase) {
+        this.qtyPurchase = qtyPurchase;
+    }
+
+    public long getUomPurchaseId() {
+        return uomPurchaseId;
+    }
+
+    public void setUomPurchaseId(long uomPurchaseId) {
+        this.uomPurchaseId = uomPurchaseId;
     }
     
 }
