@@ -36,7 +36,7 @@
             boolean privPrint = appSessUser.isPriviledged(appSessUser.getUserOID(), AppMenu.M1_RETAIL_REPORT, AppMenu.M2_STOCK_CARD, AppMenu.PRIV_PRINT);
 %>
 <%!
-    public Vector drawList(Vector objectClass, int start, double stockprev) {
+    public Vector drawList(Vector objectClass, int start, double stockprev, long itemMasterId) {
         JSPList cmdist = new JSPList();
         cmdist.setAreaWidth("100%");
         cmdist.setListStyle("listgen");
@@ -46,13 +46,15 @@
         cmdist.setHeaderStyle("tablehdr");
 
         cmdist.addHeader("No", "5%");
-        cmdist.addHeader("Date", "10%");
+        cmdist.addHeader("Date", "8%");
         cmdist.addHeader("Doc Number", "10%");
-        cmdist.addHeader("Description", "35%");
-        cmdist.addHeader("Status", "10%");
-        cmdist.addHeader("Qty In", "10%");
-        cmdist.addHeader("Qty Out", "10%");
-        cmdist.addHeader("Qty Saldo", "10%");
+        cmdist.addHeader("Description", "30%");
+        cmdist.addHeader("Status", "8%");
+        cmdist.addHeader("Expired Date", "8%");
+        cmdist.addHeader("Batch Number", "8%");
+        cmdist.addHeader("Qty In", "8%");
+        cmdist.addHeader("Qty Out", "8%");
+        cmdist.addHeader("Qty Saldo", "8%");
 
         Vector lstData = cmdist.getData();
         Vector lstLinkData = cmdist.getLinkData();
@@ -73,12 +75,16 @@
         rowx1.add("");
         rowx1.add("");
         rowx1.add("");
+        rowx1.add("");
+        rowx1.add("");
         rowx1.add("" + stockprev);
         lstData.add(rowx1);
 
         for (int i = 0; i < objectClass.size(); i++) {
 
             Stock st = (Stock) objectClass.get(i);
+            String expiredDate = "";
+            String batchNumber = "";
 
             Vector rowx = new Vector();
             rowx.add("<div align=\"center\">" + (i + 1 + start) + "</div>");
@@ -92,6 +98,25 @@
                             rec = DbReceive.fetchExc(st.getIncomingId());
                         } catch (Exception ex) {
 
+                        }
+
+                        //Ambil ReceiveItem
+                        ReceiveItem ri = new ReceiveItem();
+                        Vector recItem = new Vector();
+                        try {
+                            recItem = DbReceiveItem.list(0, 0, " receive_id = "+rec.getOID() + " and item_master_id = "+itemMasterId, "");
+                            ri = (ReceiveItem) recItem.get(0);
+                        } catch (Exception ex) {
+
+                        }
+
+                        //Ambil expiredDate
+                        if (ri.getExpiredDate()!=null){
+                            expiredDate = JSPFormater.formatDate(ri.getExpiredDate(), "dd-MM-yyyy");
+                        }
+                        //Ambil batchNumber
+                        if (ri.getBatchNumber() != null){
+                            batchNumber = ri.getBatchNumber();
                         }
 
                         rowx.add("" + rec.getNumber());
@@ -337,6 +362,8 @@
             }
 
             rowx.add("" + st.getStatus());
+            rowx.add("" + expiredDate);
+            rowx.add("" + batchNumber);
             if ((st.getQty() * st.getInOut()) < 0) {
                 rowx.add("");
                 rowx.add("" + (-1 * st.getQty() * st.getInOut()));
@@ -347,7 +374,6 @@
 
             qtySaldo = qtySaldo + (st.getQty() * st.getInOut());
             rowx.add("" + JSPFormater.formatNumber(qtySaldo, "###,###.##"));
-
 
             lstData.add(rowx);
             temp.add(st);
@@ -651,7 +677,7 @@
                             <tr>
                                 <td>
                                     <%
-                    Vector x = drawList(vstockDetail, 0, stockPrev);
+                    Vector x = drawList(vstockDetail, 0, stockPrev, itemMasterId);
                     String strTampil = (String) x.get(0);
                     Vector rptObj = (Vector) x.get(1);
                                     %>

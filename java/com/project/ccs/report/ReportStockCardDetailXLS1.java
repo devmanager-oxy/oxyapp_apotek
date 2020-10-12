@@ -11,8 +11,10 @@ import com.project.ccs.postransaction.adjusment.DbAdjusment;
 import com.project.ccs.postransaction.costing.Costing;
 import com.project.ccs.postransaction.costing.DbCosting;
 import com.project.ccs.postransaction.receiving.DbReceive;
+import com.project.ccs.postransaction.receiving.DbReceiveItem;
 import com.project.ccs.postransaction.receiving.DbRetur;
 import com.project.ccs.postransaction.receiving.Receive;
+import com.project.ccs.postransaction.receiving.ReceiveItem;
 import com.project.ccs.postransaction.receiving.Retur;
 import com.project.ccs.postransaction.repack.DbRepack;
 import com.project.ccs.postransaction.repack.Repack;
@@ -297,6 +299,8 @@ public class ReportStockCardDetailXLS1 extends HttpServlet {
         wb.println("      <Column ss:AutoFitWidth=\"0\" ss:Width=\"66.75\"/>");
         wb.println("      <Column ss:AutoFitWidth=\"0\" ss:Width=\"91.5\"/>");
         wb.println("      <Column ss:AutoFitWidth=\"0\" ss:Width=\"96.75\"/>");
+        wb.println("      <Column ss:AutoFitWidth=\"0\" ss:Width=\"66.75\"/>");
+        wb.println("      <Column ss:AutoFitWidth=\"0\" ss:Width=\"66.75\"/>");
         wb.println("      <Column ss:AutoFitWidth=\"0\" ss:Width=\"78\"/>");
         wb.println("      <Column ss:AutoFitWidth=\"0\" ss:Width=\"91.5\"/>");
         wb.println("      <Column ss:AutoFitWidth=\"0\" ss:Width=\"89.25\"/>");
@@ -349,6 +353,8 @@ public class ReportStockCardDetailXLS1 extends HttpServlet {
         wb.println("      <Cell ss:StyleID=\"s68\"><Data ss:Type=\"String\">Doc Number</Data></Cell>");
         wb.println("      <Cell ss:StyleID=\"s68\"><Data ss:Type=\"String\">Description</Data></Cell>");
         wb.println("      <Cell ss:StyleID=\"s68\"><Data ss:Type=\"String\">Status</Data></Cell>");
+        wb.println("      <Cell ss:StyleID=\"s68\"><Data ss:Type=\"String\">Expired Date</Data></Cell>");
+        wb.println("      <Cell ss:StyleID=\"s68\"><Data ss:Type=\"String\">Batch Number</Data></Cell>");
         wb.println("      <Cell ss:StyleID=\"s68\"><Data ss:Type=\"String\">Qty In</Data></Cell>");
         wb.println("      <Cell ss:StyleID=\"s68\"><Data ss:Type=\"String\">Qty Out</Data></Cell>");
         wb.println("      <Cell ss:StyleID=\"s68\"><Data ss:Type=\"String\">Qty Saldo</Data></Cell>");
@@ -362,6 +368,8 @@ public class ReportStockCardDetailXLS1 extends HttpServlet {
         wb.println("      <Cell ss:StyleID=\"s73\"><Data ss:Type=\"String\"></Data></Cell>");
         wb.println("      <Cell ss:StyleID=\"s79\"><Data ss:Type=\"String\"></Data></Cell>");
         wb.println("      <Cell ss:StyleID=\"s79\"><Data ss:Type=\"String\"></Data></Cell>");
+        wb.println("      <Cell ss:StyleID=\"s79\"><Data ss:Type=\"String\"></Data></Cell>");
+        wb.println("      <Cell ss:StyleID=\"s79\"><Data ss:Type=\"String\"></Data></Cell>");
         wb.println("      <Cell ss:StyleID=\"s79\"><Data ss:Type=\"Number\">" + rsp.getAmount() + "</Data></Cell>");
         wb.println("      </Row>");
 
@@ -370,6 +378,8 @@ public class ReportStockCardDetailXLS1 extends HttpServlet {
         for (int i = 0; i < vStock.size(); i++) {
 
             Stock st = (Stock) vStock.get(i);
+            String expiredDate = "";
+            String batchNumber = "";
             
             Date dt = getDateTime(st.getOID());
             
@@ -388,6 +398,25 @@ public class ReportStockCardDetailXLS1 extends HttpServlet {
                         } catch (Exception ex) {
 
                         }
+                        //Ambil ReceiveItem
+                        ReceiveItem ri = new ReceiveItem();
+                        Vector recItem = new Vector();
+                        try {
+                            recItem = DbReceiveItem.list(0, 0, " receive_id = "+rec.getOID() + " and item_master_id = "+rsp.getItemMasterId(), "");
+                            ri = (ReceiveItem) recItem.get(0);
+                        } catch (Exception ex) {
+
+                        }
+
+                        //Ambil expiredDate
+                        if (ri.getExpiredDate()!=null){
+                            expiredDate = JSPFormater.formatDate(ri.getExpiredDate(), "dd-MM-yyyy");
+                        }
+                        //Ambil batchNumber
+                        if (ri.getBatchNumber() != null){
+                            batchNumber = ri.getBatchNumber();
+                        }
+
                         wb.println("      <Cell ss:StyleID=\"s73\"><Data ss:Type=\"String\">"+rec.getNumber()+"</Data></Cell>");                        
                         Vendor ven = new Vendor();
                         try {
@@ -552,6 +581,8 @@ public class ReportStockCardDetailXLS1 extends HttpServlet {
             
             
             wb.println("      <Cell ss:StyleID=\"s73\"><Data ss:Type=\"String\">"+st.getStatus()+"</Data></Cell>");
+            wb.println("      <Cell ss:StyleID=\"s73\"><Data ss:Type=\"String\">"+expiredDate+"</Data></Cell>");
+            wb.println("      <Cell ss:StyleID=\"s71\"><Data ss:Type=\"String\">"+batchNumber+"</Data></Cell>");
             
             if ((st.getQty() * st.getInOut()) < 0) {
                 wb.println("      <Cell ss:StyleID=\"s79\"><Data ss:Type=\"String\"></Data></Cell>");
